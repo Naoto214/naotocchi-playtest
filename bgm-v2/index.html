@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
+<meta name="googlebot" content="noindex,nofollow">
+<meta name="theme-color" content="#f6f1e4">
+<title>なおとっち BGM V2 試聴</title>
+<style>
+:root{--bg:#f6f1e4;--card:#fffdf6;--ink:#3b3a2e;--sub:#7a7563;--line:#e4dcc6;--leaf:#4f8a4b;--leaf-ink:#fff;--soft:#e9f1df;--warn:#b5432f;--warn-bg:#fbe9e3;--bar:#ddd3b8;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#1f2119;--card:#2a2c22;--ink:#ecead9;--sub:#a9a58f;--line:#3d3f32;--leaf:#8cc47f;--leaf-ink:#14200f;--soft:#2f3a28;--warn:#ff8f78;--warn-bg:#3a2520;--bar:#46483a;color-scheme:dark}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 "Hiragino Maru Gothic ProN","Hiragino Sans","Noto Sans JP",system-ui,sans-serif;padding:0 max(16px,env(safe-area-inset-right)) calc(150px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}
+.wrap{max-width:720px;margin:0 auto}
+header{padding:calc(20px + env(safe-area-inset-top)) 0 8px}
+h1{font-size:22px;margin:0;letter-spacing:.02em}
+.lead{color:var(--sub);font-size:13px;margin:4px 0 0}
+.modes{display:flex;gap:6px;margin:14px 0 4px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px}
+.modes button{flex:1;border:0;background:transparent;color:var(--ink);font:inherit;font-size:14px;padding:8px 4px;border-radius:999px;cursor:pointer}
+.modes button[aria-pressed="true"]{background:var(--leaf);color:var(--leaf-ink);font-weight:700}
+.modehelp{font-size:12px;color:var(--sub);margin:0 0 8px;min-height:1.6em}
+.alert{display:none;background:var(--warn-bg);color:var(--warn);border-radius:12px;padding:10px 12px;font-size:13px;margin:8px 0}
+.alert.on{display:block}
+h2{font-size:13px;color:var(--sub);margin:22px 4px 6px;font-weight:700;letter-spacing:.06em}
+ol{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+li{background:var(--card);border:1px solid var(--line);border-radius:14px}
+li.now{border-color:var(--leaf);box-shadow:0 0 0 1px var(--leaf) inset}
+li.bad{border-color:var(--warn)}
+.row{display:flex;align-items:center;gap:10px;width:100%;border:0;background:transparent;color:inherit;font:inherit;text-align:left;padding:10px 12px;cursor:pointer;border-radius:14px}
+.num{flex:0 0 28px;height:28px;border-radius:50%;background:var(--soft);display:grid;place-items:center;font-size:12px;font-weight:700;color:var(--leaf)}
+li.now .num{background:var(--leaf);color:var(--leaf-ink)}
+.meta{flex:1;min-width:0}
+.t{font-weight:700;font-size:15px;overflow-wrap:anywhere}
+.u{font-size:12px;color:var(--sub);overflow-wrap:anywhere}
+.id{font:11px/1.4 ui-monospace,Menlo,monospace;color:var(--sub)}
+.side{flex:0 0 auto;text-align:right;font-size:12px;color:var(--sub)}
+.tag{display:inline-block;font-size:10px;padding:1px 6px;border-radius:6px;border:1px solid var(--line);margin-top:2px}
+.err{display:none;color:var(--warn);font-size:12px;padding:0 12px 10px 50px}
+li.bad .err{display:block}
+.player{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);padding:10px max(16px,env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));box-shadow:0 -6px 20px rgba(0,0,0,.06)}
+.pin{max-width:720px;margin:0 auto}
+.np{display:flex;justify-content:space-between;gap:8px;font-size:13px}
+.np b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.status{color:var(--sub);font-size:12px;flex:0 0 auto}
+.status.e{color:var(--warn)}
+input[type=range]{width:100%;margin:6px 0;accent-color:var(--leaf)}
+.ctrl{display:flex;align-items:center;justify-content:center;gap:18px}
+.ctrl button{border:0;background:var(--soft);color:var(--ink);width:44px;height:44px;border-radius:50%;font-size:16px;cursor:pointer}
+.ctrl .main{width:56px;height:56px;background:var(--leaf);color:var(--leaf-ink);font-size:20px}
+.time{font:12px ui-monospace,Menlo,monospace;color:var(--sub);display:flex;justify-content:space-between}
+footer{font-size:12px;color:var(--sub);margin:24px 4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<h1>なおとっち BGM 試聴 <small style="font-size:13px;color:var(--leaf)">VERSION 2</small></h1>
+<p class="lead">採用32曲（PR #539 の 音質改善版）。曲を タップすると 再生します。</p>
+<div class="modes" role="group" aria-label="再生の しかた">
+<button type="button" data-mode="single" aria-pressed="true">1曲</button>
+<button type="button" data-mode="continuous" aria-pressed="false">連続</button>
+<button type="button" data-mode="loop" aria-pressed="false">ループ</button>
+</div>
+<p class="modehelp" id="modehelp"></p>
+<div class="alert" id="alert" role="alert"></div>
+</header>
+<main id="list"></main>
+<footer>音源は AAC（44.1 kHz・192 kbps）。曲ID・曲名・音源の SHA-256 は 検証済み（PR #536 の 曲目・PR #539 の 音源と 一致）。このページは 保存データを 使いません。</footer>
+</div>
+<div class="player" aria-label="再生中の 曲">
+<div class="pin">
+<div class="np"><b id="nowTitle">曲を 選んで ください</b><span class="status" id="status"></span></div>
+<input type="range" id="seek" min="0" max="1000" value="0" step="1" aria-label="再生位置" disabled>
+<div class="time"><span id="cur">0:00</span><span id="dur">0:00</span></div>
+<div class="ctrl">
+<button type="button" id="prev" aria-label="前の 曲">⏮</button>
+<button type="button" id="play" class="main" aria-label="再生">▶</button>
+<button type="button" id="next" aria-label="次の 曲">⏭</button>
+</div>
+</div>
+</div>
+<audio id="audio" preload="none" playsinline webkit-playsinline></audio>
+<script>
+(function () {
+  'use strict';
+  var TRACKS = [{"n": 1, "id": "home-morning", "title": "そよかぜの まど", "cat": "ホーム", "use": "ホーム・朝 05:00〜09:59", "loop": true, "dur": 83.478, "bpm": 92, "sha": "3522ae20a84d73f6bf6576ac005568e7ff5e5a316fd0555dafef3e62fc29847c"}, {"n": 2, "id": "home-day", "title": "いつもの にわ", "cat": "ホーム", "use": "ホーム・昼 10:00〜15:59", "loop": true, "dur": 60.0, "bpm": 96, "sha": "99c1f819602ba3dac93453941aef56eed3d70129ef67b474dabcf1a3a93e0138"}, {"n": 3, "id": "home-evening", "title": "ほしふる みずうみ", "cat": "ホーム", "use": "ホーム・夕 16:00〜18:59", "loop": true, "dur": 65.455, "bpm": 88, "sha": "458a24e45a3d9de10832e95e632409e7b89f5b092f88940c614a1a8469c023eb"}, {"n": 4, "id": "home-night", "title": "ほしぞらの やくそく", "cat": "ホーム", "use": "ホーム・夜 19:00〜04:59", "loop": true, "dur": 50.526, "bpm": 76, "sha": "7c3927e90dc8ea086c243a07b889870f16c3b34c1b8df34452581dcabe92ca8c"}, {"n": 5, "id": "poyo-1", "title": "ぽよぽよ こもれび", "cat": "なおぽよ。", "use": "なおぽよ。 / 遊ぶ 画面・ステージ選択・おてほん・説明・なおぽよ。 / 地下牢・苔・冷たい広間・夜明け", "loop": true, "dur": 76.8, "bpm": 100, "sha": "e3a95852853d202a0e679726f7ac05e45ea13cf0ba23eaee03258b84e64b64c0"}, {"n": 6, "id": "koro-1", "title": "ころころ じんせい", "cat": "なおころ。", "use": "なおころ。 / タイトル・キャラクター選択・ひとやすみ・対戦コード・なおころ。 / すごろく盤", "loop": true, "dur": 68.571, "bpm": 112, "sha": "a94750c3d328fc1b6cdd9f36df508436d90b8099ad29f21cdb40acf1dc002a4e"}, {"n": 7, "id": "card-2", "title": "デュエル・スタート", "cat": "CARD GAME", "use": "CARD GAME / はじめの メニュー・対戦の 準備・マイデッキ・コレクション・戦績・あそびかた・ルールブック・CARD GAME / 通常の 対戦", "loop": true, "dur": 83.478, "bpm": 138, "sha": "fad806abe1bca33527f13a12ece6a534cfcd378c2589c21ed6fa354c02aecbca"}, {"n": 8, "id": "game-1", "title": "あそびの はじまり", "cat": "ミニゲーム・クイック", "use": "なおころ。 / 盤の ゲーム 2マス・通常ミニゲーム / アクション 32本", "loop": true, "dur": 53.333, "bpm": 144, "sha": "e5a75fbc60b2e00e1ce1cdff55061efa3d83df12ca97ef1960c8aa1a6e5eb32c"}, {"n": 9, "id": "explore-1", "title": "ふしぎの ちか", "cat": "3D・冒険", "use": "3D ゲーム / 探検・ダンジョン 4本", "loop": true, "dur": 80.0, "bpm": 96, "sha": "325ea8ea24f783beaaa2ad6ba450a91a7c53524cd2591364aa2459def44db23d"}, {"n": 10, "id": "event-2", "title": "ふたりの きねんび", "cat": "人生・特別な場面", "use": "デートを 選ぶ 画面・デートの 映画・結婚記念日の 映画", "loop": true, "dur": 62.609, "bpm": 92, "sha": "5fba0e5560a058c0c7bb1463b40969dda24c13d9a404cd34e5a67dcfb2f53e3b"}, {"n": 11, "id": "event-1", "title": "おめでとうの ひ", "cat": "人生・特別な場面", "use": "GAME CLEAR 画面", "loop": true, "dur": 66.207, "bpm": 116, "sha": "70f43e930b6c14f7d20a0ac0e819f0e0672fe2957572a51c74f03ca2ac902ec8"}, {"n": 12, "id": "kisetsu", "title": "きせつの きおく", "cat": "人生・特別な場面", "use": "でんせつの であい", "loop": true, "dur": 89.302, "bpm": 86, "sha": "bdf5fe2e225dd85ca4852f631b7866484e06bb3e80eaee536593401976e3eb99"}, {"n": 13, "id": "ohayo", "title": "おはようの ひかり", "cat": "人生・特別な場面", "use": "孵化ファンファーレの原曲（採用一覧に保存）", "loop": true, "dur": 48.0, "bpm": 80, "sha": "268ac3fe3f4f0475660363a81fb934124e113e9c79ba61d763d244ed3bed1960"}, {"n": 14, "id": "bgm-game", "title": "game（ミニゲーム・汎用）", "cat": "ミニゲーム・クイック", "use": "なおころ。 / 盤の クイック 4マス・クイックモード / クイックゲーム 50種", "loop": true, "dur": 55.652, "bpm": 138, "sha": "fdcd5a360f2f8419910dc1ae057c80b4e43bdf47d73597ac617fa1400494cdca"}, {"n": 15, "id": "bgm-race", "title": "race（3D・のりもの）", "cat": "ミニゲーム・クイック", "use": "3D ゲーム / レース・シューティング 5本", "loop": true, "dur": 50.526, "bpm": 152, "sha": "9d97990b09bf20326a0c4656b587b5b69492b50add1a9f47288526b20b7f4afd"}, {"n": 16, "id": "bgm-farewell", "title": "farewell（おわかれ）", "cat": "人生・特別な場面", "use": "お別れ", "loop": true, "dur": 64.0, "bpm": 60, "sha": "bf00c5d48e587b711ab3bb54c6c0b9fb798e62630d6740c6ece295274d3bc854"}, {"n": 17, "id": "poyo-2", "title": "みんなで かえろう", "cat": "ミニゲーム・クイック", "use": "通常ミニゲーム / パズル 17本", "loop": true, "dur": 83.077, "bpm": 104, "sha": "b08f97dea41434dc7959bfe291b7b439997f25f96dd1e1f67d63b4373d0dcdf2"}, {"n": 18, "id": "game-2", "title": "ぴょこぴょこ ステップ", "cat": "ミニゲーム・クイック", "use": "通常ミニゲーム / スポーツ 17本", "loop": true, "dur": 60.0, "bpm": 128, "sha": "cc03015090325bf870508130a3e9cf867f478ed37c567a70c02d2da4f45dff82"}, {"n": 19, "id": "explore-2", "title": "そらと うみの さんぽ", "cat": "3D・冒険", "use": "飛行・海の原曲108版（配置は120版）", "loop": true, "dur": 71.111, "bpm": 108, "sha": "66725244c9c34b9aa4dc977e4465a1ecbe64a22a343b863af89a8b063af98bbe"}, {"n": 20, "id": "board-b", "title": "きしと おしろ", "cat": "ミニゲーム・クイック", "use": "通常ミニゲーム / ボード・テーブル 12本", "loop": true, "dur": 80.0, "bpm": 108, "sha": "56ae58fa2ac00f9ca7e878b3dc723ce820ea220857a50e0cdb65ed4820d47fc9"}, {"n": 21, "id": "fishing-a", "title": "みずべの うたたね", "cat": "ミニゲーム・クイック", "use": "通常ミニゲーム / 釣り 4本", "loop": true, "dur": 45.714, "bpm": 84, "sha": "d124fc66735ad7f5d438cdb6f6e0db4a4f3dcb73fe2053aab9163421306cafb9"}, {"n": 22, "id": "lullaby-a", "title": "ねむりの ほし", "cat": "人生・特別な場面", "use": "睡眠", "loop": true, "dur": 45.714, "bpm": 63, "sha": "d167f9996b4f50d5886c5cb6a252d1e6a7c58287cdc3d984f6c5ff927c998411"}, {"n": 23, "id": "jingle-achieve", "title": "やったね", "cat": "人生・特別な場面", "use": "図鑑・実績の 達成・GAME CLEAR 画面", "loop": false, "dur": 9.2, "bpm": 120, "sha": "e4dfaa0a7add622a93be9943b9f996af713598b0b008b07797b0a25a6760ffad"}, {"n": 24, "id": "jingle-card-lose", "title": "つぎは かつぞ", "cat": "CARD GAME", "use": "CARD GAME / 敗北・引き分け", "loop": false, "dur": 6.2, "bpm": 96, "sha": "b692b796380847bc109ecdd3bf583b3d11442551bf262e27cf63db0ef307e0a6"}, {"n": 25, "id": "var-poyo-clear", "title": "ぽよぽよこもれび（ステージクリア）", "cat": "なおぽよ。", "use": "なおぽよ。 / ステージクリア「みんな、おかえり。」", "loop": false, "dur": 10.8, "bpm": 100, "sha": "cf523515036b513066979405b2ca0a7ee0bf78002813c781f87ed985bab9a39f"}, {"n": 26, "id": "var-poyo-chapter", "title": "ぽよぽよこもれび（章の おわり）", "cat": "なおぽよ。", "use": "なおぽよ。 / 第1章クリア", "loop": true, "dur": 48.0, "bpm": 80, "sha": "63a8044d7e31cb3fb329dc894039c354874723c20cee7ce72003950fcdbab411"}, {"n": 27, "id": "var-koro-goal", "title": "ころころじんせい（ゴール）", "cat": "なおころ。", "use": "なおころ。 / 最終ターンの ゴール", "loop": false, "dur": 9.771, "bpm": 112, "sha": "1859703adac93fa73c36cfb1252e0d0e3631b05595c67a193c4fac06426064eb"}, {"n": 28, "id": "var-koro-album", "title": "ころころじんせい（人生アルバム）", "cat": "なおころ。", "use": "なおころ。 / 人生アルバム「こんな人生に、なりました。」・過去の アルバム", "loop": true, "dur": 45.714, "bpm": 84, "sha": "87c93073915b86007da5956862927bd41cfb30169e8b4ce7e091f37374a6fc67"}, {"n": 29, "id": "var-card-late", "title": "デュエル・スタート（終盤）", "cat": "CARD GAME", "use": "CARD GAME / 終盤の 逆転", "loop": true, "dur": 73.846, "bpm": 156, "sha": "c6bd773c67cb15241c3d0fdc3b993671a6acbe729c06f8ca9fb47bafbb27a084"}, {"n": 30, "id": "var-card-win", "title": "デュエル・スタート（勝利）", "cat": "CARD GAME", "use": "CARD GAME / 勝利", "loop": false, "dur": 8.157, "bpm": 138, "sha": "160fb48b4f0c5590b2bcb11d6250bd28411bc5e2f853265715b54eced9e91ac6"}, {"n": 31, "id": "var-flight", "title": "そらとうみのさんぽ（きらめき・はやめ）", "cat": "3D・冒険", "use": "3D ゲーム / 飛行・海 7本", "loop": true, "dur": 64.0, "bpm": 120, "sha": "4396cae79ceef235b83acbc0a40d0c3ba0aa259a04af8d6c4b3433b2acab8675"}, {"n": 32, "id": "var-ohayo-hatch2", "title": "おはようのひかり（たまごが かえる・ファンファーレ 2小節）", "cat": "人生・特別な場面", "use": "たまごが かえる しゅんかん", "loop": false, "dur": 6.75, "bpm": 120, "sha": "9c614d6db04d69b91676ebde41de76fcf265a38f927eecddda359697dbfd51a5"}];
+  var BASE = '../assets/bgm/';
+  var HELP = { single: '選んだ 曲を 1回 再生して 止まります（ループ曲も 1周で 止まる）。',
+    continuous: '1番から 32番まで 順に 再生します（各曲 1周）。',
+    loop: '選んだ 曲を くりかえし 再生します。' };
+  var audio = document.getElementById('audio');
+  var $ = function (id) { return document.getElementById(id); };
+  var mode = 'single', idx = -1, seeking = false;
+  function fmt(s) { s = Math.max(0, Math.floor(s || 0)); return Math.floor(s / 60) + ':' + ('0' + s % 60).slice(-2); }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  // 一覧を つくる（カテゴリごと）
+  var html = '', lastCat = null;
+  TRACKS.forEach(function (t, i) {
+    if (t.cat !== lastCat) { if (lastCat !== null) html += '</ol>'; html += '<h2>' + esc(t.cat) + '</h2><ol>'; lastCat = t.cat; }
+    html += '<li id="tr-' + i + '"><button type="button" class="row" data-i="' + i + '">' +
+      '<span class="num">' + t.n + '</span><span class="meta"><span class="t">' + esc(t.title) + '</span><br><span class="u">' + esc(t.use) + '</span><br><span class="id">' + esc(t.id) + '</span></span>' +
+      '<span class="side">' + fmt(t.dur) + '<br><span class="tag">' + (t.loop ? 'ループ曲' : 'ジングル') + '</span></span></button>' +
+      '<div class="err" id="err-' + i + '"></div></li>';
+  });
+  $('list').innerHTML = html + '</ol>';
+  function setMode(m) {
+    mode = m; audio.loop = m === 'loop';
+    document.querySelectorAll('.modes button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.mode === m)); });
+    $('modehelp').textContent = HELP[m];
+  }
+  function status(text, isErr) { var s = $('status'); s.textContent = text; s.className = 'status' + (isErr ? ' e' : ''); }
+  function showError(i, msg) {
+    status('再生できません', true);
+    var a = $('alert'); a.textContent = msg; a.className = 'alert on';
+    if (i >= 0) { $('tr-' + i).classList.add('bad'); $('err-' + i).textContent = msg; }
+    $('play').textContent = '▶';
+  }
+  function clearError() { $('alert').className = 'alert'; $('alert').textContent = ''; }
+  var MEDIA_ERR = { 1: '読み込みが 中断されました', 2: '通信エラーで 読み込めませんでした', 3: '音源を 再生用に 変換できませんでした', 4: '音源が 見つからないか、この ブラウザで 再生できない 形式です' };
+  function loadMessage(i, c) { return '「' + TRACKS[i].title + '」（' + TRACKS[i].id + '.m4a）を 読み込めませんでした: ' + (MEDIA_ERR[c] || '原因不明') + '。通信状態を 確かめて、もう一度 ▶ を 押して ください。'; }
+  // 再生ボタンの 中で 直接 play() を 呼ぶ（iPhone Safari の 自動再生制限）
+  function playIndex(i) {
+    if (i < 0 || i >= TRACKS.length) return;
+    var t = TRACKS[i];
+    if (idx >= 0) $('tr-' + idx).classList.remove('now');
+    idx = i; $('tr-' + i).classList.add('now'); $('tr-' + i).classList.remove('bad'); $('err-' + i).textContent = '';
+    clearError();
+    $('nowTitle').textContent = t.n + '. ' + t.title;
+    $('dur').textContent = fmt(t.dur); $('cur').textContent = '0:00'; $('seek').value = 0; $('seek').disabled = false;
+    status('読み込み中…');
+    audio.loop = mode === 'loop';
+    audio.src = BASE + t.id + '.m4a';
+    var p;
+    try { p = audio.play(); } catch (e) { showError(i, '再生を 開始できませんでした（' + e.message + '）'); return; }
+    if (p && p.catch) p.catch(function (e) {
+      if (idx !== i) return;
+      if (e && e.name === 'AbortError') return; // 別の 曲に 切りかえた
+      if (e && e.name === 'NotAllowedError') { showError(i, '再生が 許可されませんでした。もう一度 ▶ を 押して ください。'); return; }
+      showError(i, loadMessage(i, audio.error ? audio.error.code : 4));
+    });
+    if ('mediaSession' in navigator && window.MediaMetadata) {
+      try { navigator.mediaSession.metadata = new MediaMetadata({ title: t.title, artist: 'なおとっち BGM V2', album: t.cat }); } catch (e) {}
+    }
+    $('tr-' + i).scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+  $('list').addEventListener('click', function (e) {
+    var b = e.target.closest('button.row'); if (!b) return;
+    var i = +b.dataset.i;
+    if (i === idx && !audio.paused) { audio.pause(); return; }
+    if (i === idx && audio.src && audio.paused && !audio.error) { audio.play().catch(function (er) { showError(i, '再生できませんでした（' + er.message + '）'); }); return; }
+    playIndex(i);
+  });
+  document.querySelectorAll('.modes button').forEach(function (b) { b.addEventListener('click', function () { setMode(b.dataset.mode); }); });
+  $('play').addEventListener('click', function () {
+    if (idx < 0) { playIndex(0); return; }
+    if (audio.error) { playIndex(idx); return; }
+    if (audio.paused) audio.play().catch(function (er) { showError(idx, '再生できませんでした（' + er.message + '）'); }); else audio.pause();
+  });
+  $('prev').addEventListener('click', function () { playIndex(idx <= 0 ? 0 : idx - 1); });
+  $('next').addEventListener('click', function () { playIndex(idx < 0 ? 0 : Math.min(TRACKS.length - 1, idx + 1)); });
+  audio.addEventListener('playing', function () { status(mode === 'loop' ? 'ループ再生中' : mode === 'continuous' ? '連続再生中' : '再生中'); $('play').textContent = '❚❚'; $('play').setAttribute('aria-label', '一時停止'); });
+  audio.addEventListener('pause', function () { if (!audio.error && !audio.ended) status('一時停止'); $('play').textContent = '▶'; $('play').setAttribute('aria-label', '再生'); });
+  audio.addEventListener('waiting', function () { status('読み込み中…'); });
+  audio.addEventListener('error', function () {
+    if (idx < 0 || !audio.getAttribute('src')) return;
+    showError(idx, loadMessage(idx, audio.error ? audio.error.code : 0));
+  });
+  audio.addEventListener('timeupdate', function () {
+    var d = audio.duration && isFinite(audio.duration) ? audio.duration : (idx >= 0 ? TRACKS[idx].dur : 0);
+    $('cur').textContent = fmt(audio.currentTime);
+    if (!seeking && d) $('seek').value = Math.round(audio.currentTime / d * 1000);
+  });
+  audio.addEventListener('ended', function () {
+    if (mode === 'continuous' && idx < TRACKS.length - 1) { playIndex(idx + 1); return; }
+    status(mode === 'continuous' ? '32曲 再生しました' : '再生おわり'); $('play').textContent = '▶';
+  });
+  var seek = $('seek');
+  seek.addEventListener('input', function () { seeking = true; var d = audio.duration || (idx >= 0 ? TRACKS[idx].dur : 0); $('cur').textContent = fmt(seek.value / 1000 * d); });
+  seek.addEventListener('change', function () { var d = audio.duration || (idx >= 0 ? TRACKS[idx].dur : 0); try { audio.currentTime = seek.value / 1000 * d; } catch (e) {} seeking = false; });
+  if ('mediaSession' in navigator) {
+    try {
+      navigator.mediaSession.setActionHandler('previoustrack', function () { playIndex(Math.max(0, idx - 1)); });
+      navigator.mediaSession.setActionHandler('nexttrack', function () { playIndex(Math.min(TRACKS.length - 1, idx + 1)); });
+    } catch (e) {}
+  }
+  setMode('single');
+  window.NAOTOCCHI_BGM_V2_LISTEN = { tracks: TRACKS, audio: audio, state: function () { return { mode: mode, idx: idx }; } };
+})();
+</script>
+</body>
+</html>
