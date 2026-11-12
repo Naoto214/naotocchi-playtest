@@ -1,0 +1,105 @@
+/* Egg-only inner layers. The home cast's shared sway and character reactions
+   remain on their existing parents. These effects never gate game state. */
+#petSprite .egg-warming {
+  transform-origin:50% 91%;
+  animation:egg-warm 560ms ease-in-out;
+}
+@keyframes egg-warm {
+  0%,100% {transform:rotate(0) scale(1)}
+  24% {transform:rotate(-7deg) scale(1.02,.98)}
+  52% {transform:rotate(6deg) scale(.99,1.01)}
+  76% {transform:rotate(-3deg)}
+}
+#petSprite .egg-newborn > .character-asset,
+#petSprite .egg-newborn > .character-emoji-fallback {
+  animation:egg-newborn-appear 900ms ease-out both;
+}
+@keyframes egg-newborn-appear {
+  0%,15% {opacity:0;transform:translateY(8%) scale(.82)}
+  65% {opacity:1;transform:translateY(-2%) scale(1.04)}
+  100% {opacity:1;transform:none}
+}
+#petSprite .egg-hatch-shell,
+#petSprite .egg-hatch-shell > span {
+  position:absolute;inset:0;pointer-events:none;
+}
+#petSprite .egg-hatch-shell > span {
+  background:url('assets/characters/egg/ready.png') center / 100% 100% no-repeat;
+  image-rendering:pixelated;
+  animation:egg-shell-top 900ms ease-out forwards;
+}
+#petSprite .egg-shell-top {
+  clip-path:polygon(0 0,100% 0,100% 68%,84% 68%,74% 64%,64% 61%,58% 55%,50% 54%,43% 48%,33% 43%,25% 39%,25% 37%,0 37%);
+}
+#petSprite .egg-hatch-shell > .egg-shell-bottom {
+  clip-path:polygon(0 37%,25% 37%,25% 39%,33% 43%,43% 48%,50% 54%,58% 55%,64% 61%,74% 64%,84% 68%,100% 68%,100% 100%,0 100%);
+  animation-name:egg-shell-bottom;
+}
+@keyframes egg-shell-top {
+  0%,12% {opacity:1;transform:none}
+  65% {opacity:.55}
+  100% {opacity:0;transform:translate(10%,-12%) rotate(12deg)}
+}
+@keyframes egg-shell-bottom {
+  0%,12% {opacity:1;transform:none}
+  65% {opacity:.55}
+  100% {opacity:0;transform:translate(-10%,8%) rotate(-10deg)}
+}
+@media (prefers-reduced-motion:reduce) {
+  #petSprite .egg-warming,
+  #petSprite .egg-newborn > .character-asset,
+  #petSprite .egg-newborn > .character-emoji-fallback {
+    animation:none;opacity:1;transform:none;
+  }
+  #petSprite .egg-hatch-shell {display:none}
+}
+
+/* Temporary birth-only presentation. No hitboxes or actor transforms change. */
+.birth-celebration {
+  position:fixed;inset:0;z-index:90;pointer-events:none;
+  contain:layout style;overflow:hidden;
+}
+.birth-halo {
+  position:absolute;left:50%;top:44%;width:min(80vw,330px);aspect-ratio:1;
+  border-radius:50%;transform:translate(-50%,-50%);
+  background:radial-gradient(circle,#fffbe800 0%,#fffbe829 22%,#ffe7a74d 44%,#fff5ce00 70%);
+  animation:birth-glow 2.8s ease-out both;
+}
+/* Use the existing 42px notification lane, never an overlay on the cast. */
+body[data-home-terrain="true"] #homeEventSlot>#message.birth-notice {
+ box-sizing:border-box;min-height:0;
+ padding:3px 16px;border:1px solid #d6b368;border-radius:12px;
+ background:linear-gradient(110deg,#fffbedeb,#fff0cce6,#fffbedeb);
+ color:#49301e;font-size:clamp(15px,4.1vw,17px);font-weight:800;
+ line-height:1.2;overflow-wrap:anywhere;text-align:center;
+ box-shadow:inset 0 0 8px #fff8df,0 0 7px #e9c87866;
+ position:relative;
+}
+#message.birth-notice::before,#message.birth-notice::after {
+ content:'✦';position:absolute;top:50%;transform:translateY(-50%);
+ font-size:10px;color:#9b6c18;pointer-events:none;
+}
+#message.birth-notice::before {left:3px}
+#message.birth-notice::after {right:3px}
+.birth-star {
+  position:absolute;left:calc(50% + (var(--i) - 3.5)*27px);top:43%;
+  color:#e8b449;font-size:calc(15px + var(--i)*1px);text-shadow:0 0 8px #fff;
+  animation:birth-star 2.8s ease-out both;
+}
+@keyframes birth-glow {
+  0% {opacity:0;transform:translate(-50%,-50%) scale(.7)}
+  20%,75% {opacity:1}
+  100% {opacity:0;transform:translate(-50%,-50%) scale(1.12)}
+}
+@keyframes birth-star {
+  0% {opacity:0;transform:translateY(22px) scale(.6)}
+  20%,65% {opacity:1}
+  100% {opacity:0;transform:translateY(calc(-45px - var(--i)*6px)) rotate(35deg)}
+}
+@media (prefers-reduced-motion:reduce) {
+  .birth-halo,.birth-star {animation:none;}
+  .birth-star {transform:translateY(calc(-12px - var(--i)*4px));}
+}
+
+/* Egg progress is told by the notice; retain the meter slot geometry. */
+.egg-story-progress .bar-line:has(#evoBar) {visibility:hidden;}

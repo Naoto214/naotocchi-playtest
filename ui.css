@@ -1,0 +1,332 @@
+/* Home UI layer. Existing character art, game canvases and movie choreography
+   stay in style.css; these rules are scoped to the home cast and menus. */
+@font-face {
+  font-family:"Naotocchi Rounded";
+  src:url("assets/fonts/mplus-rounded-1c-regular.woff2") format("woff2");
+  font-style:normal;
+  font-weight:400;
+  font-display:swap;
+}
+:root {
+  --ui-font:"Naotocchi Rounded","Hiragino Maru Gothic ProN","Hiragino Maru Gothic Pro",ui-rounded,"Hiragino Sans",sans-serif;
+  --ui-ink:#34382f; --ui-muted:#5a6654; --ui-paper:#fffaf3;
+  --ui-teal:#286c62; --ui-rose:#98526a; --ui-purple:#776090;
+  --ui-case:#efd4df; --ui-line:#c7d0ba;
+}
+/* Fit the visible Safari viewport. Extreme zoom/text remains scrollable. */
+:root {--app-height:100vh;--home-top:max(6px,env(safe-area-inset-top));--home-bottom:max(6px,env(safe-area-inset-bottom))}
+@supports(height:100dvh){:root{--app-height:100dvh}}
+body {padding:var(--home-top) 6px var(--home-bottom);min-height:var(--app-height);align-items:flex-start;font-family:var(--ui-font)}
+button, input, select, textarea {font-family:inherit}
+button {touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+button:focus-visible, select:focus-visible, a:focus-visible {outline:3px solid #286c62;outline-offset:3px}
+[hidden] {display:none!important}
+.device {--home-action-height:clamp(44px,calc((var(--app-height) - 552px)/3),64px);width:min(100%,420px);border-radius:36px 36px 30px 30px;padding:10px 10px 8px;box-shadow:0 8px 24px #45313e18,inset 0 2px 0 #fff7fb;background-color:var(--ui-case);font-family:var(--ui-font)}
+.device[data-cast-crowded="true"] {--home-action-height:clamp(44px,calc((var(--app-height) - 650px)/3),56px)}
+.device.ui-home-active {height:calc(var(--app-height) - var(--home-top) - var(--home-bottom));min-height:min-content;display:grid;grid-template-rows:auto minmax(min-content,1fr) auto auto}
+/* Narration owns a row outside the central scroll area. The home class can
+   remain set during a minigame, so follow the actual screen's visibility. */
+.device.ui-home-active:has(#screenNormal:not(.hidden)) {grid-template-rows:auto minmax(0,1fr) auto auto auto}
+.device:not(:has(#screenNormal:not(.hidden))) > #message {display:none}
+.device-top {position:absolute;top:4px;left:calc(50% - 3px);margin:0}
+.device-top .lamp {width:6px;height:6px}
+.header-title {position:relative;min-width:0;color:var(--ui-ink);border-radius:12px;padding:0 5px}
+.device:not(.theme-default) .header-title {background:#fffaf3eb;padding:3px 6px}
+.device-header {display:flex;align-items:center;justify-content:space-between;gap:6px;min-height:44px;padding:0 2px 6px}
+.name-plate {font-size:20px;line-height:1.2;font-weight:600;letter-spacing:.035em;color:#684253;text-shadow:none;text-align:left;margin:0}
+
+.header-actions {display:flex;gap:6px}
+.header-button {display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;min-width:48px;min-height:44px;padding:3px 5px;border:0;border-radius:12px;background:#faeef3;color:#633e51;font-size:18px;cursor:pointer}
+.header-button span {font-size:11px}
+.header-button.hidden {display:none}
+.screen-frame {display:flex;padding:2px;background:#9fa78c;border-radius:22px;box-shadow:none}
+.screen {flex:1;min-height:min-content;padding:7px 9px;border-radius:20px;font-family:var(--ui-font);color:var(--ui-ink);image-rendering:auto;min-width:0}
+.screen.dying {filter:none}
+.screen.dying > .screen-normal {filter:brightness(0.78) saturate(0.7)}
+.screen-normal {min-width:0;min-height:min-content}
+.screen-normal > * {flex-shrink:0}
+.status-row {font-size:12px;line-height:1.35;font-weight:400;gap:2px 6px;flex-wrap:wrap;min-height:0;font-variant-numeric:tabular-nums}
+.age-status {display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;min-width:0}
+#ageLabel {font-size:13px;font-weight:500}
+#sodachiLabel,#moneyLabel {font-size:12px;font-weight:400}
+.sub-status-row {display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:2px 6px;font-size:11px;line-height:1.3;margin-top:2px}
+.world-status {display:flex;flex-direction:row;gap:4px;flex-wrap:wrap}
+.cast-heading {position:relative;display:flex;align-items:center;justify-content:center;min-height:0;padding:3px 0 2px}
+.cast-names {display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2px;text-align:center;min-width:0;flex:1;overflow-wrap:anywhere}
+.cast-title-line {display:flex;justify-content:center;align-items:baseline;gap:2px 6px;flex-wrap:wrap;max-width:100%}
+#mainNameLabel {font-size:15px;font-weight:600}
+#partnerLabel {font-size:12px;line-height:1.3;margin-top:0;font-weight:400;min-height:0;max-width:100%}
+#partnerLabel:empty {display:none}
+.name-heart {font-size:1em;line-height:1;color:#de3c79}
+.stage-name-row {font-size:11px;line-height:1.25;font-weight:400;margin:0;opacity:1;white-space:normal;overflow:visible}
+.cast-badges {display:flex;align-items:center;gap:3px;flex-wrap:wrap;min-width:0}
+.cast-badges:has(.badges:empty):has(.ending-badges:empty) {display:none}
+.cast-badges .badges,.cast-badges .ending-badges {position:static;font-size:15px;line-height:1.3;gap:2px;display:flex;flex-wrap:wrap;justify-content:flex-start}
+.ending-badge {display:inline-flex;align-items:center;justify-content:center;min-width:24px;min-height:24px;margin:0;border:0;background:transparent;font:inherit;cursor:pointer;padding:2px}
+.ending-badge-tip {z-index:12;top:100%;bottom:auto;left:0;right:auto;width:max-content;max-width:min(300px,calc(100vw - 54px));font-size:12px}
+#petArea {padding:0;min-height:min-content;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;flex:1}
+.cast-stage {position:relative;min-height:132px;flex:1;height:auto;width:100%;isolation:isolate}
+.cast-sway {position:absolute;inset:0;animation:cast-together 3.2s ease-in-out infinite;will-change:transform;transform-origin:center}
+.cast-response {position:absolute;inset:0}
+@keyframes cast-together {0%,100%{transform:translate(-6px,0)}25%,75%{transform:translate(0,-1px)}50%{transform:translate(6px,0)}}
+.screen.sleeping .cast-sway {animation-duration:7s}
+.device.ui-menu-open .cast-sway,.device.ui-game-active .cast-sway {animation-play-state:paused}
+#pet {position:absolute;inset:0;display:block;filter:none;font-size:0;width:100%;height:100%;cursor:pointer}
+#pet .pet-core,#pet .pet-core:has(.partner-companion:not(.hidden),.pet-accessory:not(.hidden)) {position:static;display:contents;padding:0;min-width:0}
+#pet .companion-side {position:absolute;inset:0;display:block;direction:ltr;pointer-events:none}
+#pet .companion-chip-small,#pet #petSprite,#pet .partner-companion,#pet .pet-accessory {position:absolute;margin:0;padding:0;border:0;background:none;border-radius:0;box-shadow:none;filter:none;animation:none!important;transform:none;display:flex;align-items:center;justify-content:center;line-height:1}
+#pet .companion-chip-small {width:24px;height:24px}
+#pet #petSprite {width:104px;height:104px;font-size:80px;left:calc(50% - 52px);top:35px}
+#pet .character-visual {width:100%;height:100%;font-size:inherit}
+#pet .character-asset {width:100%;height:100%;object-fit:contain}
+/* Static image placement composes with hatch transforms and parent reactions. */
+#pet #petSprite > .character-visual > .character-asset {position:relative;top:var(--cast-art-offset-y,0px);transform-origin:50% calc(50% - var(--cast-art-offset-y,0px))}
+#pet .partner-companion {width:52px;height:52px;top:0;left:calc(50% - 90px);font-size:40px}
+#pet .partner-emoji {width:100%;height:100%;font-size:inherit;filter:none;display:flex;align-items:center;justify-content:center}
+#pet .partner-heart {position:absolute;font-size:24px;line-height:1;z-index:1;filter:none;display:flex;align-items:center;justify-content:center}
+/* The cast solver reserves the complete ring and its movement clearance. */
+/* Keep the solver frame/centre unchanged. Only the existing marriage glyph
+   grows (1.5–2.3px per edge); its silver stays bright and blue becomes pale.
+   Human-approved presentation; no comparison overrides or saved state. */
+#pet .partner-ring {font-size:15px;right:auto;bottom:auto;display:flex;align-items:center;justify-content:center;transform:scale(1.2);transform-origin:center;filter:saturate(.25) brightness(1.18);pointer-events:none}
+#pet .pet-accessory {width:36px;height:36px;top:0;left:calc(50% + 24px);font-size:32px}
+#pet .hidden {display:none}
+/* Local gestures keep their safe gaps. A separate shared lift adds 10–16px of
+   visible response without changing the actors' sizes or restarting idle sway. */
+#pet #petSprite.cast-speaking,#pet .cast-speaking {filter:drop-shadow(0 0 2px #f9d99a)}
+#pet .partner-heart {opacity:.75;transition:opacity .18s ease-in-out}
+#pet .partner-companion:has(.cast-speaking,[data-reaction="love"],[data-reaction="shy"]) .partner-heart {opacity:1}
+#pet.emote-love #petSprite {filter:drop-shadow(0 0 3px #f2a0ba)}
+#pet.emote-happy #petSprite,#pet.emote-fun #petSprite {filter:brightness(1.04)}
+.screen.sleeping #pet,.screen.sick #pet {transform:none;animation:none}
+/* Reserve two text lines, bubble padding/border (12px), and slot padding (7px).
+   Appearance, expiry and long text must not resize the cast or the screen. */
+.speech-slot {display:flex;justify-content:center;align-items:flex-start;font-size:13px;height:calc(2.8em + 19px);min-height:0;flex-shrink:0;padding:5px 0 2px}
+/* Keep the existing speaker-specific border styles (partner / companion). */
+.speech-slot .speech-bubble {display:flex;width:fit-content;max-width:96%;margin:0;padding:4px 8px;font-size:13px;line-height:1.4;font-weight:400;color:var(--ui-ink);border-width:2px;border-color:#63735b;background:#fffaf8;box-shadow:0 2px 0 #40503818}
+.speech-slot .speech-bubble::before {width:10px;height:10px;top:-6px;background:#fffaf8;border-color:#63735b}
+.speech-slot .speech-bubble.hidden {display:none}
+.speech-speaker {font-size:17px;line-height:1.2}
+.speech-text {min-width:0;max-height:2.8em;overflow-y:auto;overflow-wrap:anywhere;overscroll-behavior:contain}
+.speech-slot {position:relative}
+/* Conversation v2: 問いかけの選択肢。吹き出しのすぐ下に重ねて出し、Home の並びは動かさない。
+   問いかけの間だけ吹き出しの段をメーターより前へ出す(メーターは表示だけで、押す場所ではない) */
+.speech-slot.is-asking {z-index:6}
+.speech-choices {position:absolute;left:50%;width:min(360px,calc(100vw - 24px));transform:translateX(-50%);top:100%;z-index:6;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:8px;padding:8px 2px 0;pointer-events:none}
+.speech-choices[data-count="4"] {grid-auto-flow:row;grid-template-columns:1fr 1fr}
+.speech-choices.hidden {display:none}
+.speech-choice {pointer-events:auto;min-width:0;min-height:48px;padding:6px 8px;font:inherit;font-size:14px;line-height:1.3;overflow-wrap:anywhere;color:var(--ui-ink);background:#fffaf8;border:2px solid #63735b;border-radius:16px;box-shadow:0 2px 0 #40503826;touch-action:manipulation;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.speech-choice:active {transform:translateY(1px);box-shadow:none}
+/* The floor never participates in flex sizing and never moves with the cast. */
+#poopRow {position:absolute;inset:auto 0 0;height:20px;min-height:0;padding:0;margin:0;font-size:17px;line-height:20px;letter-spacing:3px;text-align:center;white-space:nowrap;pointer-events:none}
+#poopRow:empty {visibility:hidden}
+/* Daily care is read in two columns. Longer-term meters keep aligned rows. */
+.home-meters {display:flex;flex-direction:column;gap:0;margin-top:5px;min-width:0;font-variant-numeric:tabular-nums}
+.home-meters .care-meters {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 14px;margin:0}
+.home-meters .bars.meters {display:grid;grid-template-columns:minmax(0,1fr);gap:2px;margin:5px 0 0;padding:5px 0 0;border-top:1px solid #63735b40}
+.home-meters .bars.hidden {display:none}
+.home-meters .bar-line {display:grid;align-items:center;margin:0;min-width:0}
+.home-meters .bar-label {font-size:12px;line-height:1.3;font-weight:400;width:auto;white-space:normal;overflow-wrap:anywhere}
+.home-meters .bar-value {font-size:11px;font-weight:400;width:auto;line-height:1.3;text-align:right;white-space:nowrap}
+.home-meters .bar {height:6px;background:#54684b26;min-width:0;border-radius:4px}
+.care-meters .bar-line {grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto 6px;gap:2px 4px}
+.care-meters .bar-label {grid-column:1;grid-row:1}
+.care-meters .bar-value {grid-column:2;grid-row:1;font-size:12px}
+.care-meters .bar {grid-column:1/-1;grid-row:2}
+.home-meters .meters .bar-line {grid-template-columns:6.25em minmax(0,1fr) 9ch;gap:6px;font-size:12px}
+.home-meters .meters .bar-label {grid-column:1;grid-row:1}
+.home-meters .meters .bar {grid-column:2;grid-row:1}
+.home-meters .meters .bar-value {grid-column:3;grid-row:1}
+.bar-fill {background:var(--ui-teal)}
+.bar-fill.evo {background:#507953}.bar-fill.devo {background:#927024}.bar-fill.death {background:#486b8a}.bar-fill.transform,.bar-fill.goal {background:var(--ui-purple)}
+/* Reserve two notice lines, including while there is no narration. */
+.message {height:2.6em;min-height:2.6em;font-size:12px;font-weight:500;line-height:1.3;margin:3px 0 0;overflow-y:auto;overflow-wrap:anywhere;overscroll-behavior:contain}
+.message:empty {visibility:hidden}
+.buttons {position:relative;z-index:9;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:7px;padding:0 0 2px;background:transparent;border-radius:15px}
+.buttons button {display:flex;align-items:center;justify-content:center;gap:5px;flex-direction:row;min-height:var(--home-action-height);min-width:0;padding:4px 2px;font-size:20px;line-height:1.2;border:1px solid #bbcfbf;border-radius:14px;background:#dcece1;color:var(--ui-teal);box-shadow:0 2px 0 #a4b9a8}
+.buttons button span {font-size:14px;line-height:1.2;color:inherit;margin:0;font-weight:500;min-width:0;white-space:normal;overflow-wrap:anywhere}
+#playBtn {background:var(--ui-teal);color:#fffdf7;border-color:var(--ui-teal)}
+#courtBtn {background:#f7e6ee;color:var(--ui-rose);border-color:#d6b2c1;box-shadow:0 2px 0 #c09ba9}
+#playWithBtn {background:#f7e6ee;color:var(--ui-rose);border-color:#d6b2c1;box-shadow:0 2px 0 #c09ba9}
+#travelBtn {background:#e3edf5;color:#486b8a;border-color:#b9cadb;box-shadow:0 2px 0 #a8bccd}
+#menuBtn {background:var(--ui-paper);color:var(--ui-purple);border-color:#d1c6c5;box-shadow:0 2px 0 #bfaab3}
+.life-actions {display:flex;flex-wrap:wrap;gap:4px}
+.life-actions .farewell-bar {position:relative;flex-basis:100%}
+.life-actions button {flex:1}
+.life-actions button {min-height:44px;border:1px solid #d1c6c5;border-radius:12px;background:var(--ui-paper);color:#684253;font-size:13px}
+.life-actions .hidden {display:none}
+.device.ui-game-active .buttons {display:none}
+.device.ui-game-active .header-actions {visibility:hidden}
+.device.ui-menu-open .buttons {visibility:hidden;pointer-events:none}
+.device.ui-menu-open .header-actions {visibility:hidden}
+.device:is(.ui-game-active,.ui-menu-open) .cast-badges {visibility:hidden}
+.device:is(.ui-game-active,.ui-menu-open) .ending-badge-tip {display:none}
+.dex-overlay {position:fixed;inset:max(12px,env(safe-area-inset-top)) max(12px,calc((100vw - 416px)/2)) max(12px,env(safe-area-inset-bottom));z-index:40;border:1px solid #d6c5c9;border-radius:21px;padding:12px;background:var(--ui-paper);color:var(--ui-ink);box-shadow:0 12px 60px #30213655;font-family:var(--ui-font);text-shadow:none}
+.dex-header {gap:8px;flex-shrink:0;min-height:44px}
+.dex-title {font-size:17px;font-weight:600;color:var(--ui-purple)}
+.dex-close-btn {min-width:44px;min-height:44px;font-size:19px;border:1px solid var(--ui-line);background:var(--ui-paper);border-radius:12px;flex-shrink:0}
+.dex-detail-overlay,.wipe-overlay {position:fixed;inset:max(12px,env(safe-area-inset-top)) max(12px,calc((100vw - 416px)/2)) max(12px,env(safe-area-inset-bottom));z-index:50;overflow:auto;border-radius:21px}
+.profile-scroll,.theme-scroll,.dex-scroll,.ach-scroll {min-height:0;overflow:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.profile-section h3 {font-size:14px;font-weight:600;margin:0 0 10px}
+.profile-hint,.world-date-hint {font-size:12px;line-height:1.65;letter-spacing:normal;overflow-wrap:anywhere}
+.profile-code-btn {min-height:44px;font-size:13px;border-radius:12px;line-height:1.4}
+.profile-code-box {font-size:16px}
+.menu-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;overflow:auto}
+.menu-grid button, .menu-grid .independent-game {min-height:92px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;background:#f2ede9;border:1px solid #d8cfd0;border-radius:16px;font-size:26px;color:var(--ui-purple);cursor:pointer;padding:10px 4px}
+.menu-grid .menu-label {font-size:16px;font-weight:600}.menu-grid small {font-size:12px;color:var(--ui-muted)}
+.menu-grid #worldBtn {background:#e8eff4;color:#486b8a}.menu-grid #gamesBtn {background:#e5f0e7;color:var(--ui-teal)}.menu-grid #itemBtn {background:#f7e6ee;color:var(--ui-rose)}
+.date-invite-btn {background:var(--ui-rose);color:white;border-color:var(--ui-rose)}
+.design-tabs,.ach-tabs,.item-tabs {display:flex;gap:6px;padding:4px;border-radius:14px;background:#e9e5df;flex-shrink:0}
+.design-tabs button,.ach-tab,.item-tab {flex:1;min-width:0;min-height:44px;padding:6px 4px;font-size:13px;border:0;border-radius:10px;color:var(--ui-muted);background:transparent;cursor:pointer}
+.design-tabs button[aria-pressed="true"],.ach-tab.active {background:var(--ui-purple);color:#fffaff}
+.item-tab.active {background:var(--ui-rose);color:#fffaff}
+.theme-grid {grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.theme-swatch {min-height:68px;min-width:0;border-radius:12px}
+.theme-swatch-label {font-size:11px;white-space:normal}
+.design-font-row {display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-top:1px solid var(--ui-line);font-size:13px}
+.design-font-row select {font-size:16px;min-height:44px;background:var(--ui-paper);color:var(--ui-ink);border:1px solid var(--ui-line);border-radius:10px;padding:5px 9px}
+.environment-choices {display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}
+.environment-choices .theme-swatch {padding:6px 1px;min-height:64px}.environment-choices .theme-swatch-circle {width:28px;height:28px;font-size:20px}
+.environment-choices .selected {background:#dcece1;border-color:var(--ui-teal);box-shadow:inset 0 0 0 1px var(--ui-teal)}
+.location-card {border:1px solid var(--ui-line);border-radius:15px;padding:12px;font-size:13px}
+.environment-credit {font-size:10px;line-height:1.5}.environment-credit a {color:#486b8a}
+.screen[data-time="night"] .cast-stage {background:radial-gradient(ellipse at center,#6b70a018,transparent 72%)}
+.screen[data-time="evening"] .cast-stage {background:radial-gradient(ellipse at center,#fca46930,transparent 72%)}
+.screen[data-time="morning"] .cast-stage {background:radial-gradient(ellipse at center,#ffe79035,transparent 72%)}
+.screen[data-weather="rain"] .cast-stage::before,.screen[data-weather="snow"] .cast-stage::before {content:"";position:absolute;inset:0;pointer-events:none;z-index:-1;opacity:.3;background-image:repeating-linear-gradient(105deg,transparent 0 28px,#6495af 29px 30px,transparent 31px 60px)}
+.screen[data-weather="snow"] .cast-stage::before {background:radial-gradient(circle,#fff 1px,transparent 2px) 0 0/32px 32px}
+.device[data-font="standard"] {--ui-font:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif}
+.device[data-font="retro"] {--ui-font:"Hiragino Kaku Gothic ProN","MS Gothic",monospace}
+.device[data-text-size="large"] .home-meters .bar-label,.device[data-text-size="large"] .speech-bubble,.device[data-text-size="large"] .speech-slot,.device[data-text-size="large"] .message,.device[data-text-size="large"] .profile-hint {font-size:14px}
+.device[data-text-size="large"] .home-meters .meters .bar-line {font-size:14px}
+.device[data-text-size="large"] .home-meters .bar-value {font-size:12px}
+.device[data-text-size="large"] .buttons button span {font-size:14px}
+@media(max-width:360px){.device{padding:8px 8px 6px}.name-plate{font-size:18px}.header-button{min-width:44px}.header-actions{gap:4px}.screen{padding-inline:7px}.home-meters .care-meters{column-gap:10px}.buttons{gap:6px}.buttons button{gap:3px;font-size:17px}.buttons button span{font-size:13px}}
+@media(max-width:360px){.device[data-text-size="large"] .buttons button{gap:2px;font-size:13px}}
+@media(max-height:620px){.device-header{padding-bottom:4px}.home-meters{margin-top:4px}.home-meters .care-meters{row-gap:4px}.home-meters .bars.meters{gap:2px;margin-top:5px;padding-top:5px}.cast-heading{padding-top:2px}.buttons{gap:6px;margin-top:6px}}
+@media(min-height:800px){.device-header{padding-bottom:8px}.screen{padding:9px 10px}.home-meters .bars.meters{gap:4px}}
+/* Safari's visible height can be shorter than its CSS layout viewport.
+   Keep both groups and every value visible, using fewer rows in that case. */
+.device.ui-home-compact .device-header {padding-bottom:4px}
+.device.ui-home-compact .screen {padding-block:6px}
+.device.ui-home-compact .cast-names {flex-direction:row;flex-wrap:wrap;gap:2px 8px}
+.device.ui-home-compact .home-meters {margin-top:4px}
+.device.ui-home-compact .care-meters {grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.device.ui-home-compact .care-meters .bar-line {grid-template-rows:auto auto;gap:2px 4px}
+.device.ui-home-compact .care-meters .bar-label {grid-column:1/-1;grid-row:1}
+.device.ui-home-compact .care-meters .bar {grid-column:1;grid-row:2}
+.device.ui-home-compact .care-meters .bar-value {grid-column:2;grid-row:2}
+.device.ui-home-compact .bars.meters {grid-template-columns:repeat(6,minmax(0,1fr));gap:4px 8px;margin-top:4px;padding-top:4px}
+.device.ui-home-compact .meters .bar-line {grid-column:span 2;grid-template-columns:minmax(0,1fr) auto;gap:2px 4px}
+.device.ui-home-compact .meters .bar-line:nth-child(n+4) {grid-column:span 3}
+.device.ui-home-compact .meters .bar-label {grid-column:1/-1;grid-row:1}
+.device.ui-home-compact .meters .bar {grid-column:1;grid-row:2}
+.device.ui-home-compact .meters .bar-value {grid-column:2;grid-row:2}
+.device.ui-home-compact .buttons {grid-template-columns:repeat(20,minmax(0,1fr));column-gap:4px;margin-top:6px}
+.device.ui-home-compact .buttons button {grid-column:span 4;min-height:44px;font-size:16px}
+.device.ui-home-compact .buttons button span {font-size:12px}
+.device.ui-home-compact[data-text-size="large"] .buttons button span {font-size:14px}
+.device.ui-home-compact .buttons button:nth-child(n+6) {grid-column:span 5}
+@media(prefers-reduced-motion:reduce){.cast-sway{animation:none;transform:none;will-change:auto}#pet .partner-heart{transition:none}}
+
+/* Appearance controls explain which surface changes without hiding the preview. */
+#themeOverlay .theme-scroll {padding:0 4px 12px;overscroll-behavior:contain}
+#themeOverlay .dex-header {justify-content:space-between}
+.design-help {font-size:12px;line-height:1.55;color:#4a554b;margin:8px 0 12px}
+.design-range-row {margin-bottom:16px}
+.design-range-row label {display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:14px;font-weight:600;color:#273b30}
+.design-range-row output {font-variant-numeric:tabular-nums;color:#355e62}
+.design-range-row input[type=range] {display:block;width:100%;height:44px;margin:0;accent-color:#397977;cursor:pointer}
+.design-range-row input:focus-visible {outline:3px solid #397977;outline-offset:2px;border-radius:8px}
+.design-range-ends {display:flex;justify-content:space-between;gap:8px;font-size:11px;color:#59645a}
+.glass-reset-btn {display:block;min-height:44px;padding:8px 14px;border:1px solid #7d9c91;border-radius:12px;background:#f3f6ef;color:#28473d}
+.design-collection {margin-top:14px;border-top:1px solid #d8ded2;padding-top:8px}
+.design-collection summary {min-height:44px;padding:10px 4px;cursor:pointer;color:#31463a;font-size:14px}
+.design-collection .dex-progress {float:right;font-size:12px}
+.design-collection-item {display:flex;flex-direction:column;align-items:center;gap:5px;padding:8px 2px;font-size:12px;text-align:center;color:#405044}
+.design-collection-item .theme-swatch-circle {width:48px;height:40px;border-radius:10px}
+.design-collection-lock {display:grid;place-items:center;width:48px;height:40px;color:#6b766b}
+
+/* Relationship cues belong to their actor. Images retain their original color.
+   No layout size, global fog, filter on artwork, particles or perpetual timers. */
+#pet .companion-chip-small,#pet .partner-emoji{isolation:isolate}
+#pet .partner-emoji{position:relative}
+/* Keep a positive companion and its attached cue above neighbouring idle cast. */
+#pet .companion-chip-small[data-relationship-state="positive"]{z-index:1}
+.relationship-aura{position:absolute;pointer-events:none;border-radius:50%;z-index:-1;background:radial-gradient(ellipse,transparent 25%,rgba(145,166,222,.21) 53%,rgba(155,196,235,.12) 70%,transparent 76%)}
+.relationship-aura[data-relationship-state="positive"]{background:radial-gradient(ellipse,rgba(255,224,170,.12) 20%,rgba(255,187,107,.5) 55%,rgba(255,211,128,.22) 69%,transparent 78%);animation:relationship-warm 2.5s ease-out both}
+.relationship-heart{position:absolute;display:flex;pointer-events:none;line-height:1;color:#e5a0b6;z-index:2;transform-origin:center bottom}
+.relationship-heart svg{width:100%;height:100%;overflow:visible}
+.relationship-heart[data-relationship-state="lonely"]{color:#a9b5dd}
+.relationship-heart[data-relationship-state="positive"]{color:#f16a83;animation:relationship-heart-pop 2.5s ease-out both}
+@keyframes relationship-heart-pop{0%{opacity:0;transform:scale(.55)}12%,65%{opacity:1;transform:scale(1)}85%{opacity:.85;transform:translateY(var(--relationship-float,-3px)) scale(.94)}100%{opacity:0;transform:translateY(var(--relationship-float,-3px)) scale(.8)}}
+@keyframes relationship-warm{0%{opacity:0;transform:scale(.88)}15%,60%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.04)}}
+@media(prefers-reduced-motion:reduce){.relationship-heart[data-relationship-state="positive"],.relationship-aura[data-relationship-state="positive"]{animation:none}}
+
+.menu-grid .independent-game { text-decoration:none; background:#e6f3f5; color:#34576a; }
+.menu-grid {min-height:0;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.menu-grid .story-entry {background:#FCFBF9;color:#414C50;border-color:#D8D8D2}
+
+/* Six rows share the visible Safari viewport after safe areas and header.
+   Intrinsic content remains the minimum: small screens/large text may scroll. */
+#menuOverlay {
+  --menu-gap:clamp(3px,1dvh,6px);
+  inset:max(8px,env(safe-area-inset-top)) max(8px,calc((100vw - 420px)/2)) auto;
+  height:min(660px,calc(var(--app-height) - max(8px,env(safe-area-inset-top)) - max(8px,env(safe-area-inset-bottom))));
+  box-sizing:border-box;padding:8px;
+}
+#menuOverlay .dex-header {margin-bottom:var(--menu-gap)}
+#menuOverlay .menu-grid {
+  flex:1 1 0;min-height:0;gap:var(--menu-gap);
+  grid-template-rows:repeat(6,minmax(min-content,1fr));
+  padding:3px;margin:-3px;scroll-padding:3px;
+}
+#menuOverlay .menu-grid > :is(button,a) {
+  min-width:0;min-height:44px;padding:clamp(3px,0.8dvh,6px) 4px;
+  gap:2px;line-height:1.25;text-align:center;
+}
+#menuOverlay .menu-heading {
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  min-height:28px;max-width:100%;flex:none;
+}
+#menuOverlay .menu-label {
+  min-width:0;font-size:clamp(16px,4.1vw,17px);font-weight:600;
+  line-height:1.25;word-break:keep-all;overflow-wrap:anywhere;
+}
+#menuOverlay .menu-icon {
+  display:inline-flex;align-items:center;justify-content:center;
+  width:28px;height:28px;flex:0 0 28px;font-size:26px;line-height:1;
+}
+#menuOverlay .menu-icon > :is(i,svg,span,img) {
+  display:block;width:28px;height:28px;flex:none;max-width:100%;
+  font-size:26px;line-height:28px;object-fit:contain;
+}
+#menuOverlay .menu-grid small {
+  display:block;flex:none;min-height:1.35em;font-size:clamp(12px,3.1vw,13px);
+  line-height:1.35;text-align:center;text-wrap:balance;overflow-wrap:normal;
+}
+#menuOverlay .menu-grid small > span {display:inline-block;max-width:100%;white-space:normal;word-break:keep-all;overflow-wrap:anywhere}
+
+
+
+/* Individuality: bidirectional, non-ranked temperament axes and touch-size choices. */
+.individual-trait{margin:8px 0}.individual-axis{display:grid;grid-template-columns:1fr auto 1fr;gap:4px;align-items:center;font-size:11px}.individual-axis span:last-child{text-align:right}.individual-axis span:nth-child(2){color:#426f91;white-space:nowrap;font-size:16px}.individual-heart{display:flex;justify-content:space-between;gap:12px;line-height:1.7}.individual-dialog{position:fixed;inset:0;z-index:10000;background:#20334baa;display:grid;place-items:center;padding:16px}.individual-dialog.hidden{display:none}.individual-panel{box-sizing:border-box;width:min(100%,420px);max-height:85dvh;overflow:auto;border-radius:22px;background:#f7f9fc;color:#253b50;padding:22px;box-shadow:0 12px 40px #0004}.individual-panel h2{font-size:20px}.individual-panel p{line-height:1.7}.individual-panel button{display:block;width:100%;min-height:48px;margin:12px 0;padding:12px;border:1px solid #91aabc;border-radius:12px;background:#fff;color:inherit;font:inherit;white-space:normal;overflow-wrap:anywhere}.individual-panel button:focus-visible{outline:3px solid #437faa}.individual-panel #individualityLater{background:transparent;border:0}
+
+#menuOverlay .menu-grid > .naokoro-entry {background:#fff0d9;color:#805837;border-color:#dfc9ab}
+#naokoroDialog {box-sizing:border-box;width:min(320px,calc(100% - 32px));border:1px solid #d8cfd0;border-radius:21px;padding:22px;background:var(--ui-paper);color:var(--ui-ink);font-family:var(--ui-font);text-align:center;box-shadow:0 12px 60px #30213655}
+#naokoroDialog::backdrop {background:#30213666}
+#naokoroDialog h2 {font-size:20px;margin:0 0 16px}
+#naokoroDialog p {font-size:15px;line-height:1.5;margin:8px 0}
+#naokoroDialog button {min-height:44px;min-width:120px;margin-top:12px;border:1px solid #dfc9ab;border-radius:12px;background:#fff0d9;color:#805837;font:inherit;cursor:pointer}
+
+/* Short visible viewports reserve room for Safari bars and safe areas without
+   scaling the page. Keep readable type and at least 44px touch targets. */
+@media(max-height:540px){
+  #menuOverlay{--menu-gap:3px}
+  #menuOverlay .menu-grid > :is(button,a){padding:1px 3px;gap:1px}
+  #menuOverlay .menu-heading{min-height:24px;gap:4px}
+  #menuOverlay .menu-label{font-size:15px}
+  #menuOverlay .menu-icon{width:24px;height:24px;flex-basis:24px}
+  #menuOverlay .menu-icon > :is(i,svg,span,img){width:24px;height:24px;font-size:23px;line-height:24px}
+  #menuOverlay .menu-grid small{font-size:12px}
+}

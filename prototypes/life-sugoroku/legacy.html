@@ -1,0 +1,94 @@
+<!doctype html><html lang="ja"><head><meta name="robots" content="noindex,nofollow,noarchive,nosnippet"><meta name="googlebot" content="noindex,nofollow"><script>/* なおとっち 試遊版専用: 本番（同じ naoto214.github.io）の 保存データと 混ざらない ように する。
+   localStorage・sessionStorage の キーに「naotocchi-playtest:」を 付けて 読み書きし、本番の キーには 触れない。
+   IndexedDB・Cache Storage の 名前にも 同じ 印を 付け、Service Worker の 登録は 止める。
+   分離が できなかった ときは、本番の データを 守る ため ゲームを 起動しない。 */
+(function () {
+  'use strict';
+  var P = 'naotocchi-playtest:';
+  function stopAll(reason) {
+    try { window.stop(); } catch (e) {}
+    var msg = '試遊版を安全に起動できませんでした（' + reason + '）。本番の保存データを守るため、ここで止めています。';
+    try { document.documentElement.innerHTML = '<body style="font:16px sans-serif;padding:24px">' + msg + '</body>'; } catch (e) {}
+    throw new Error(msg);
+  }
+  function realStorage(name) {
+    var d = Object.getOwnPropertyDescriptor(window, name) || Object.getOwnPropertyDescriptor(Window.prototype, name);
+    if (!d || !d.get) return { ok: false };
+    try { return { ok: true, value: d.get.call(window) }; } catch (e) { return { ok: true, error: e }; }
+  }
+  function wrap(real) {
+    function own() {
+      var ks = [];
+      for (var i = 0; i < real.length; i++) { var k = real.key(i); if (k !== null && k.indexOf(P) === 0) ks.push(k.slice(P.length)); }
+      return ks;
+    }
+    var api = {};
+    var methods = {
+      getItem: function (k) { return real.getItem(P + String(k)); },
+      setItem: function (k, v) { real.setItem(P + String(k), String(v)); },
+      removeItem: function (k) { real.removeItem(P + String(k)); },
+      clear: function () { own().forEach(function (k) { real.removeItem(P + k); }); },
+      key: function (i) { var ks = own(); return i >= 0 && i < ks.length ? ks[i] : null; }
+    };
+    Object.keys(methods).forEach(function (m) { Object.defineProperty(api, m, { value: methods[m], configurable: true }); });
+    Object.defineProperty(api, 'length', { get: function () { return own().length; }, configurable: true });
+    return new Proxy(api, {
+      get: function (t, p) { if (p in t) return t[p]; if (typeof p !== 'string') return undefined; var v = real.getItem(P + p); return v === null ? undefined : v; },
+      set: function (t, p, v) { if (typeof p === 'string' && !(p in t)) { real.setItem(P + p, String(v)); return true; } return false; },
+      has: function (t, p) { return p in t || (typeof p === 'string' && real.getItem(P + p) !== null); },
+      deleteProperty: function (t, p) { if (typeof p === 'string' && !(p in t)) real.removeItem(P + p); return true; },
+      ownKeys: function (t) { return own().concat(Reflect.ownKeys(t)); },
+      getOwnPropertyDescriptor: function (t, p) {
+        if (typeof p === 'string' && !(p in t)) { var v = real.getItem(P + p); if (v !== null) return { value: v, enumerable: true, configurable: true, writable: true }; }
+        return Reflect.getOwnPropertyDescriptor(t, p);
+      }
+    });
+  }
+  var shims = new Map();
+  ['localStorage', 'sessionStorage'].forEach(function (name) {
+    var r = realStorage(name);
+    if (!r.ok) stopAll(name + ' を確認できない');
+    var getter;
+    if (r.error) getter = function () { throw r.error; };      // 保存できない 環境は そのまま（ゲーム側の 既存の 対応に まかせる）
+    else { var s = wrap(r.value); shims.set(r.value, s); getter = function () { return s; }; }
+    try { Object.defineProperty(window, name, { get: getter, configurable: true, enumerable: true }); } catch (e) { stopAll(name + ' を分けられない'); }
+    if (!r.error && window[name] !== shims.get(r.value)) stopAll(name + ' を分けられない');
+  });
+  // 別タブの 保存通知（storage イベント）は 試遊版の キーだけを、印を 外して わたす
+  var add = window.addEventListener, rem = window.removeEventListener, wrapped = new WeakMap();
+  function storageListener(f) {
+    if (!f) return f;
+    var g = wrapped.get(f);
+    if (!g) {
+      g = function (e) {
+        if (typeof e.key !== 'string' || e.key.indexOf(P) !== 0) return;
+        var ev = { type: 'storage', key: e.key.slice(P.length), oldValue: e.oldValue, newValue: e.newValue, url: e.url,
+          storageArea: shims.get(e.storageArea) || e.storageArea, target: window, currentTarget: window };
+        return typeof f === 'function' ? f.call(this, ev) : f.handleEvent(ev);
+      };
+      wrapped.set(f, g);
+    }
+    return g;
+  }
+  window.addEventListener = function (t, f, o) { return add.call(this, t, t === 'storage' ? storageListener(f) : f, o); };
+  window.removeEventListener = function (t, f, o) { return rem.call(this, t, t === 'storage' && f ? (wrapped.get(f) || f) : f, o); };
+  // IndexedDB・Cache Storage（今の ゲームは 使って いないが、念のため 名前を 分ける）
+  try {
+    var idb = window.indexedDB;
+    if (idb) {
+      var open = idb.open, del = idb.deleteDatabase;
+      idb.open = function (n, v) { return v === undefined ? open.call(idb, P + n) : open.call(idb, P + n, v); };
+      idb.deleteDatabase = function (n) { return del.call(idb, P + n); };
+    }
+  } catch (e) {}
+  try {
+    var cs = window.caches;
+    if (cs) ['open', 'delete', 'has'].forEach(function (m) { var f = cs[m]; cs[m] = function (n) { return f.call(cs, P + n); }; });
+  } catch (e) {}
+  // Service Worker は 登録しない（本番の 範囲に 入りこまない ように）
+  try {
+    if (navigator.serviceWorker) navigator.serviceWorker.register = function () { return Promise.reject(new Error('試遊版では Service Worker を使いません')); };
+  } catch (e) {}
+  window.NAOTOCCHI_PLAYTEST = { prefix: P };
+})();
+</script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#f5f0e3"><title>なおころ。｜人生すごろく</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="../../game-home-return.css"></head><body><div class="game-home-bar"><a class="game-home-link" data-game-home href="../../">ホームにもどる</a></div><p style="text-align:center"><a href="index.html">VERSION 4へもどる</a></p><main id="app"></main><div id="notice" role="status" aria-live="polite"></div><script src="../../character-world-master.v1.js"></script><script src="../../individuality-data.js"></script><script src="../../pet-expression.js"></script><script src="../../relationship-expression.js"></script><script src="../../resident-expression.js"></script><script type="module" src="main.mjs"></script></body></html>

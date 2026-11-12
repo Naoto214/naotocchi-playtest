@@ -1,0 +1,11 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet"><title>試遊版の保存データを消す</title></head>
+<body style="font:16px sans-serif;padding:24px;line-height:1.7"><h1 style="font-size:20px">試遊版の保存データを消す</h1>
+<p>この試遊版で保存されたデータ（名前が「naotocchi-playtest:」で始まるもの）だけを消します。本番のなおとっちの保存データには触れません。</p>
+<p id="count"></p><button id="go" style="font-size:16px;padding:8px 16px">試遊版のデータを消す</button><p id="done"></p>
+<script>
+var P='naotocchi-playtest:';function keys(s){var k=[];for(var i=0;i<s.length;i++){var x=s.key(i);if(x&&x.indexOf(P)===0)k.push(x);}return k;}
+function show(){try{document.getElementById('count').textContent='いま試遊版のデータは '+keys(localStorage).length+' 件あります。';}catch(e){document.getElementById('count').textContent='保存データを読めませんでした。';}}
+document.getElementById('go').onclick=function(){try{keys(localStorage).forEach(function(k){localStorage.removeItem(k);});keys(sessionStorage).forEach(function(k){sessionStorage.removeItem(k);});document.getElementById('done').textContent='消しました。';}catch(e){document.getElementById('done').textContent='消せませんでした。';}show();};
+show();
+</script></body></html>
