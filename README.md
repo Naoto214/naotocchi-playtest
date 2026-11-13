@@ -5,4 +5,6 @@
 - 元にした 版: Naoto214/naotocchi の ブランチ `claude/jolly-cray-xeq38x-game`（コミット e3974381d・BGM VERSION 2 統合）
 - 保存データは 名前に `naotocchi-playtest:` を 付けて 本番と 分けて います（`playtest-reset.html` で 試遊版の データだけ 消せます）
 - 検索エンジンに 載せない 指定（robots noindex）を 全ページに 入れて います
-- `bgm-v2/`: 採用32曲 VERSION 2（PR #539）の 試聴ページ（1曲・連続・ループ）。音源は `assets/bgm/` の V2 AAC を そのまま 使用
+- `bgm-v2/`: 採用32曲 VERSION 2（PR #539）の 試聴ページ（1曲・連続・ループ）。音源は `audio/v2/` の V2 AAC（PR #539 と バイト一致）
+- `bgm-v3/`: VERSION 2／VERSION 3 比較試聴ページ（ホーム4曲が 先頭。同じ 位置の まま 切りかえ）
+- ゲームの BGM（`assets/bgm/*.m4a`）は VERSION 3（Naoto214/naotocchi の ブランチ `claude/jolly-cray-xeq38x-v3`）に 差し替え。曲ID・曲名・長さ・ループ・再生条件・音量・セーブデータは 変えて いない。`catalog.js` の file に `?v=` を 付けて 古い 音源の キャッシュを 避ける

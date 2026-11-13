@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
+<meta name="googlebot" content="noindex,nofollow">
+<meta name="theme-color" content="#f4efe2">
+<title>なおとっち BGM V2・V3 比較</title>
+<style>
+:root{--bg:#f4efe2;--card:#fffdf6;--ink:#3a382c;--sub:#777260;--line:#e2d9c2;--leaf:#4c8648;--leaf-ink:#fff;--soft:#e7efdc;--v2:#8a7f62;--warn:#b5432f;--warn-bg:#fbe9e3;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#1e2018;--card:#292b21;--ink:#ebe9d8;--sub:#a7a38d;--line:#3c3e31;--leaf:#8cc47f;--leaf-ink:#14200f;--soft:#2e3827;--v2:#b9ad8c;--warn:#ff8f78;--warn-bg:#3a2520;color-scheme:dark}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 "Hiragino Maru Gothic ProN","Hiragino Sans","Noto Sans JP",system-ui,sans-serif;padding:0 max(16px,env(safe-area-inset-right)) calc(170px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}
+.wrap{max-width:720px;margin:0 auto}
+header{padding:calc(20px + env(safe-area-inset-top)) 0 6px}
+h1{font-size:21px;margin:0}
+.lead{color:var(--sub);font-size:13px;margin:4px 0 0}
+.how{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px;font-size:13px;margin:12px 0}
+.how b{color:var(--leaf)}
+.modes{display:flex;gap:6px;margin:10px 0 2px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px}
+.modes button{flex:1;border:0;background:transparent;color:var(--ink);font:inherit;font-size:14px;padding:8px 4px;border-radius:999px;cursor:pointer}
+.modes button[aria-pressed="true"]{background:var(--leaf);color:var(--leaf-ink);font-weight:700}
+.alert{display:none;background:var(--warn-bg);color:var(--warn);border-radius:12px;padding:10px 12px;font-size:13px;margin:8px 0}.alert.on{display:block}
+h2{font-size:13px;color:var(--sub);margin:22px 4px 6px;letter-spacing:.06em}
+ol{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+li{background:var(--card);border:1px solid var(--line);border-radius:14px}
+li.now{border-color:var(--leaf);box-shadow:0 0 0 1px var(--leaf) inset}li.bad{border-color:var(--warn)}
+.row{display:flex;align-items:center;gap:10px;width:100%;border:0;background:transparent;color:inherit;font:inherit;text-align:left;padding:10px 12px;cursor:pointer;border-radius:14px}
+.num{flex:0 0 28px;height:28px;border-radius:50%;background:var(--soft);display:grid;place-items:center;font-size:12px;font-weight:700;color:var(--leaf)}
+li.now .num{background:var(--leaf);color:var(--leaf-ink)}
+.meta{flex:1;min-width:0}.t{font-weight:700;overflow-wrap:anywhere}.u{font-size:12px;color:var(--sub);overflow-wrap:anywhere}
+.chg{font-size:12px;color:var(--ink);opacity:.85;padding:0 12px 10px 50px;overflow-wrap:anywhere}
+.side{flex:0 0 auto;text-align:right;font-size:12px;color:var(--sub)}
+.err{display:none;color:var(--warn);font-size:12px;padding:0 12px 10px 50px}li.bad .err{display:block}
+.player{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);padding:10px max(16px,env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));box-shadow:0 -6px 20px rgba(0,0,0,.06)}
+.pin{max-width:720px;margin:0 auto}
+.np{display:flex;justify-content:space-between;gap:8px;font-size:13px}.np b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.status{color:var(--sub);font-size:12px;flex:0 0 auto}.status.e{color:var(--warn)}
+.ab{display:flex;gap:6px;margin:8px 0 2px}
+.ab button{flex:1;border:2px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;font-weight:700;padding:8px;border-radius:12px;cursor:pointer}
+.ab button[aria-pressed="true"]{border-color:var(--leaf);background:var(--soft)}
+.ab button[data-v="2"][aria-pressed="true"]{border-color:var(--v2)}
+input[type=range]{width:100%;margin:4px 0;accent-color:var(--leaf)}
+.time{font:12px ui-monospace,Menlo,monospace;color:var(--sub);display:flex;justify-content:space-between}
+.ctrl{display:flex;align-items:center;justify-content:center;gap:18px}
+.ctrl button{border:0;background:var(--soft);color:var(--ink);width:44px;height:44px;border-radius:50%;font-size:16px;cursor:pointer}
+.ctrl .main{width:54px;height:54px;background:var(--leaf);color:var(--leaf-ink);font-size:20px}
+footer{font-size:12px;color:var(--sub);margin:24px 4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<h1>なおとっち BGM 比較 <small style="font-size:13px;color:var(--leaf)">V2 → V3</small></h1>
+<p class="lead">VERSION 3 は「チン」「キン」と 鳴る 単発の 高音を 取りのぞき、音数を 整理して 生楽器の 掛け合いに した 版です。</p>
+<div class="how">曲を タップすると <b>V3</b> で 再生します。下の <b>V2</b>／<b>V3</b> を 押すと、<b>同じ 位置の まま</b> 切りかわります（2つは 同じ 音量に そろえて あります）。まず ホーム4曲を 聴き比べて ください。</div>
+<div class="modes" role="group" aria-label="再生の しかた">
+<button type="button" data-mode="single" aria-pressed="true">1曲</button>
+<button type="button" data-mode="continuous" aria-pressed="false">連続</button>
+<button type="button" data-mode="loop" aria-pressed="false">ループ</button>
+</div>
+<div class="alert" id="alert" role="alert"></div>
+</header>
+<main id="list"></main>
+<footer>音源は どちらも AAC（44.1 kHz・192 kbps）。V2 は PR #539、V3 は 今回の 改善版。曲ID・曲名・主旋律は 同じ です。このページは 保存データを 使いません。</footer>
+</div>
+<div class="player">
+<div class="pin">
+<div class="np"><b id="nowTitle">曲を 選んで ください</b><span class="status" id="status"></span></div>
+<div class="ab" role="group" aria-label="版の 切りかえ"><button type="button" data-v="2" aria-pressed="false">V2（前）</button><button type="button" data-v="3" aria-pressed="true">V3（改善後）</button></div>
+<input type="range" id="seek" min="0" max="1000" value="0" aria-label="再生位置" disabled>
+<div class="time"><span id="cur">0:00</span><span id="dur">0:00</span></div>
+<div class="ctrl"><button type="button" id="prev" aria-label="前の 曲">⏮</button><button type="button" id="play" class="main" aria-label="再生">▶</button><button type="button" id="next" aria-label="次の 曲">⏭</button></div>
+</div>
+</div>
+<audio id="a2" preload="none" playsinline></audio><audio id="a3" preload="none" playsinline></audio>
+<script>
+(function () {
+  'use strict';
+  var TRACKS = [{"n": 1, "id": "home-morning", "title": "そよかぜの まど", "cat": "ホーム", "use": "ホーム・朝 05:00〜09:59", "dur": 83.478, "change": "ピアノの 旋律に ナイロンギターの 和音と ウッドベース。2周目は フルートが そっと 寄りそう（爽やかで 軽やか）。単発の 装飾音 24音を 削除"}, {"n": 2, "id": "home-day", "title": "いつもの にわ", "cat": "ホーム", "use": "ホーム・昼 10:00〜15:59", "dur": 60.0, "change": "ピアノの 旋律。和音は ピアノ → ギター → 両方と 受けわたし、ウッドベース。2周目は クラリネット、3周目は フルートが 寄りそう（明るく 疲れない）。単発の 装飾音 24音を 削除"}, {"n": 3, "id": "home-evening", "title": "ほしふる みずうみ", "cat": "ホーム", "use": "ホーム・夕 16:00〜18:59", "dur": 65.455, "change": "ピアノの 旋律。和音は ピアノ → ギター、チェロの やわらかい 低音。2周目は クラリネットが 寄りそう（穏やかで 少し 感傷的）。単発の 装飾音 30音を 削除"}, {"n": 4, "id": "home-night", "title": "ほしぞらの やくそく", "cat": "ホーム", "use": "ホーム・夜 19:00〜04:59", "dur": 50.526, "change": "弱い タッチの ピアノ だけ（静かで 温かい 夜の 空気）。単発の 装飾音 11音を 削除"}, {"n": 5, "id": "poyo-1", "title": "ぽよぽよ こもれび", "cat": "なおぽよ。", "use": "なおぽよ。 / 遊ぶ 画面・ステージ選択・おてほん・説明・なおぽよ。 / 地下牢・苔・冷たい広間・夜明け", "dur": 76.8, "change": "単発の 装飾音 20音を 削除。高音の 持ち上げを やめ、旋律に 自然な 強弱"}, {"n": 6, "id": "koro-1", "title": "ころころ じんせい", "cat": "なおころ。", "use": "なおころ。 / タイトル・キャラクター選択・ひとやすみ・対戦コード・なおころ。 / すごろく盤", "dur": 68.571, "change": "単発の 装飾音 20音を 削除。高音の 持ち上げを やめ、旋律に 自然な 強弱"}, {"n": 7, "id": "card-2", "title": "デュエル・スタート", "cat": "CARD GAME", "use": "CARD GAME / はじめの メニュー・対戦の 準備・マイデッキ・コレクション・戦績・あそびかた・ルールブック・CARD GAME / 通常の 対戦", "dur": 83.478, "change": "単発の 装飾音 30音を 削除。木琴の 重ねを マリンバに・高音の 持ち上げを やめ、旋律に 自然な 強弱"}, {"n": 8, "id": "game-1", "title": "あそびの はじまり", "cat": "ミニゲーム・クイック", "use": "なおころ。 / 盤の ゲーム 2マス・通常ミニゲーム / アクション 32本", "dur": 53.333, "change": "単発の 装飾音 22音を 削除。木琴の 重ねを マリンバに・高音の 持ち上げを やめ、旋律に 自然な 強弱"}, {"n": 9, "id": "explore-1", "title": "ふしぎの ちか", "cat": "3D・冒険", "use": "3D ゲーム / 探検・ダンジョン 4本", "dur": 80.0, "change": "単発の 装飾音 20音を 削除。高音の 持ち上げを やめ、旋律に 自然な 強弱"}, {"n": 10, "id": "event-2", "title": "ふたりの きねんび", "cat": "人生・特別な場面", "use": "デートを 選ぶ 画面・デートの 映画・結婚記念日の 映画", "dur": 62.609, "change": "単発の 装飾音 20音を 削除。高音の 持ち上げを やめ、旋律に 自然な 強弱"}, {"n": 11, "id": "event-1", "title": "おめでとうの ひ", "cat": "人生・特別な場面", "use": "GAME CLEAR 画面", "dur": 66.207, "change": "単発の 装飾音 20音を 削除。高音の 持ち上げを やめ、旋律に 自然な 強弱"}, {"n": 12, "id": "kisetsu", "title": "きせつの きおく", "cat": "人生・特別な場面", "use": "でんせつの であい", "dur": 89.302, "change": "単発の 装飾音 18音を 削除。高音の 持ち上げを やめ、旋律に 自然な 強弱"}, {"n": 13, "id": "ohayo", "title": "おはようの ひかり", "cat": "人生・特別な場面", "use": "孵化ファンファーレの原曲（採用一覧に保存）", "dur": 48.0, "change": "単発の 装飾音 9音を 削除。高音の 持ち上げを やめ、旋律に 自然な 強弱"}, {"n": 14, "id": "bgm-game", "title": "game（ミニゲーム・汎用）", "cat": "ミニゲーム・クイック", "use": "なおころ。 / 盤の クイック 4マス・クイックモード / クイックゲーム 50種", "dur": 55.652, "change": "単発の 装飾音 16音を 削除。木琴の 重ねを マリンバに・高音の 持ち上げを やめ、旋律に 自然な 強弱"}, {"n": 15, "id": "bgm-race", "title": "race（3D・のりもの）", "cat": "ミニゲーム・クイック", "use": "3D ゲーム / レース・シューティング 5本", "dur": 50.526, "change": "単発の 装飾音 16音を 削除。木琴の 重ねを マリンバに・高音の 持ち上げを やめ、旋律に 自然な 強弱"}, {"n": 16, "id": "bgm-farewell", "title": "farewell（おわかれ）", "cat": "人生・特別な場面", "use": "お別れ", "dur": 64.0, "change": "高音の 持ち上げを やめ、旋律に 自然な 強弱"}, {"n": 17, "id": "poyo-2", "title": "みんなで かえろう", "cat": "ミニゲーム・クイック", "use": "通常ミニゲーム / パズル 17本", "dur": 83.077, "change": "単発の 装飾音 30音を 削除。高音の 持ち上げを やめ、旋律に 自然な 強弱"}, {"n": 18, "id": "game-2", "title": "ぴょこぴょこ ステップ", "cat": "ミニゲーム・クイック", "use": "通常ミニゲーム / スポーツ 17本", "dur": 60.0, "change": "単発の 装飾音 20音を 削除。木琴の 重ねを マリンバに・高音の 持ち上げを やめ、旋律に 自然な 強弱"}, {"n": 19, "id": "explore-2", "title": "そらと うみの さんぽ", "cat": "3D・冒険", "use": "飛行・海の原曲108版（配置は120版）", "dur": 71.111, "change": "単発の 装飾音 20音を 削除。高音の 持ち上げを やめ、旋律に 自然な 強弱"}, {"n": 20, "id": "board-b", "title": "きしと おしろ", "cat": "ミニゲーム・クイック", "use": "通常ミニゲーム / ボード・テーブル 12本", "dur": 80.0, "change": "単発の 装飾音 27音を 削除。高音の 持ち上げを やめ、旋律に 自然な 強弱"}, {"n": 21, "id": "fishing-a", "title": "みずべの うたたね", "cat": "ミニゲーム・クイック", "use": "通常ミニゲーム / 釣り 4本", "dur": 45.714, "change": "単発の 装飾音 10音を 削除。高音の 持ち上げを やめ、旋律に 自然な 強弱"}, {"n": 22, "id": "lullaby-a", "title": "ねむりの ほし", "cat": "人生・特別な場面", "use": "睡眠", "dur": 45.714, "change": "単発の 装飾音 9音を 削除。高音の 持ち上げを やめ、旋律に 自然な 強弱"}, {"n": 23, "id": "jingle-achieve", "title": "やったね", "cat": "人生・特別な場面", "use": "図鑑・実績の 達成・GAME CLEAR 画面", "dur": 9.2, "change": "単発の 装飾音 3音を 削除。高音の 持ち上げを やめ、旋律に 自然な 強弱"}, {"n": 24, "id": "jingle-card-lose", "title": "つぎは かつぞ", "cat": "CARD GAME", "use": "CARD GAME / 敗北・引き分け", "dur": 6.2, "change": "単発の 装飾音 2音を 削除。高音の 持ち上げを やめ、旋律に 自然な 強弱"}, {"n": 25, "id": "var-poyo-clear", "title": "ぽよぽよこもれび（ステージクリア）", "cat": "なおぽよ。", "use": "なおぽよ。 / ステージクリア「みんな、おかえり。」", "dur": 10.8, "change": "単発の 装飾音 3音を 削除。高音の 持ち上げを やめ、旋律に 自然な 強弱"}, {"n": 26, "id": "var-poyo-chapter", "title": "ぽよぽよこもれび（章の おわり）", "cat": "なおぽよ。", "use": "なおぽよ。 / 第1章クリア", "dur": 48.0, "change": "単発の 装飾音 10音を 削除。高音の 持ち上げを やめ、旋律に 自然な 強弱"}, {"n": 27, "id": "var-koro-goal", "title": "ころころじんせい（ゴール）", "cat": "なおころ。", "use": "なおころ。 / 最終ターンの ゴール", "dur": 9.771, "change": "単発の 装飾音 3音を 削除。高音の 持ち上げを やめ、旋律に 自然な 強弱"}, {"n": 28, "id": "var-koro-album", "title": "ころころじんせい（人生アルバム）", "cat": "なおころ。", "use": "なおころ。 / 人生アルバム「こんな人生に、なりました。」・過去の アルバム", "dur": 45.714, "change": "単発の 装飾音 10音を 削除。高音の 持ち上げを やめ、旋律に 自然な 強弱"}, {"n": 29, "id": "var-card-late", "title": "デュエル・スタート（終盤）", "cat": "CARD GAME", "use": "CARD GAME / 終盤の 逆転", "dur": 73.846, "change": "単発の 装飾音 30音を 削除。木琴の 重ねを マリンバに・高音の 持ち上げを やめ、旋律に 自然な 強弱"}, {"n": 30, "id": "var-card-win", "title": "デュエル・スタート（勝利）", "cat": "CARD GAME", "use": "CARD GAME / 勝利", "dur": 8.157, "change": "単発の 装飾音 3音を 削除。高音の 持ち上げを やめ、旋律に 自然な 強弱"}, {"n": 31, "id": "var-flight", "title": "そらとうみのさんぽ（きらめき・はやめ）", "cat": "3D・冒険", "use": "3D ゲーム / 飛行・海 7本", "dur": 64.0, "change": "単発の 装飾音 20音を 削除。高音の 持ち上げを やめ、旋律に 自然な 強弱"}, {"n": 32, "id": "var-ohayo-hatch2", "title": "おはようのひかり（たまごが かえる・ファンファーレ 2小節）", "cat": "人生・特別な場面", "use": "たまごが かえる しゅんかん", "dur": 6.75, "change": "高音の 持ち上げを やめ、旋律に 自然な 強弱"}];
+  var BASE = { 2: '../audio/v2/', 3: '../assets/bgm/' };
+  var A = { 2: document.getElementById('a2'), 3: document.getElementById('a3') };
+  var $ = function (id) { return document.getElementById(id); };
+  var mode = 'single', idx = -1, ver = 3, seeking = false;
+  function fmt(s) { s = Math.max(0, Math.floor(s || 0)); return Math.floor(s / 60) + ':' + ('0' + s % 60).slice(-2); }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  var html = '', lastCat = null;
+  TRACKS.forEach(function (t, i) {
+    if (t.cat !== lastCat) { if (lastCat !== null) html += '</ol>'; html += '<h2>' + esc(t.cat) + '</h2><ol>'; lastCat = t.cat; }
+    html += '<li id="tr-' + i + '"><button type="button" class="row" data-i="' + i + '"><span class="num">' + t.n + '</span><span class="meta"><span class="t">' + esc(t.title) + '</span><br><span class="u">' + esc(t.use) + '</span></span><span class="side">' + fmt(t.dur) + '<br>' + esc(t.id) + '</span></button>' +
+      '<div class="chg">' + esc(t.change) + '</div><div class="err" id="err-' + i + '"></div></li>';
+  });
+  $('list').innerHTML = html + '</ol>';
+  var MEDIA_ERR = { 1: '読み込みが 中断されました', 2: '通信エラー', 3: '再生用に 変換できませんでした', 4: '音源が 見つからないか、再生できない 形式です' };
+  function status(t, e) { var s = $('status'); s.textContent = t; s.className = 'status' + (e ? ' e' : ''); }
+  function clearError() { $('alert').className = 'alert'; $('alert').textContent = ''; }
+  function showError(i, v, code) {
+    var t = TRACKS[i], msg = '「' + t.title + '」の V' + v + '（' + t.id + '.m4a）を 読み込めませんでした: ' + (MEDIA_ERR[code] || '原因不明') + '。通信状態を 確かめて、もう一度 ▶ を 押して ください。';
+    status('再生できません', true); $('alert').textContent = msg; $('alert').className = 'alert on';
+    $('tr-' + i).classList.add('bad'); $('err-' + i).textContent = msg; $('play').textContent = '▶';
+  }
+  function cur() { return A[ver]; }
+  function setVer(v) {
+    document.querySelectorAll('.ab button').forEach(function (b) { b.setAttribute('aria-pressed', String(+b.dataset.v === v)); });
+    if (v === ver) return;
+    var from = A[ver], to = A[v], wasPlaying = idx >= 0 && !from.paused, pos = from.currentTime || 0;
+    ver = v; if (idx < 0) return;
+    from.pause();
+    var url = BASE[v] + TRACKS[idx].id + '.m4a';
+    if (to.getAttribute('src') !== url) to.src = url;
+    to.loop = mode === 'loop';
+    try { to.currentTime = pos; } catch (e) {}
+    var seekOnce = function () { if (Math.abs(to.currentTime - pos) > .3) { try { to.currentTime = pos; } catch (e) {} } to.removeEventListener('loadedmetadata', seekOnce); };
+    to.addEventListener('loadedmetadata', seekOnce);
+    if (wasPlaying) start(to, idx, v);
+  }
+  function start(a, i, v) {
+    var p; try { p = a.play(); } catch (e) { showError(i, v, 0); return; }
+    if (p && p.catch) p.catch(function (e) {
+      if (idx !== i || A[ver] !== a || (e && e.name === 'AbortError')) return;
+      if (e && e.name === 'NotAllowedError') { status('もう一度 ▶ を 押して ください', true); return; }
+      showError(i, v, a.error ? a.error.code : 4);
+    });
+  }
+  function playIndex(i) {
+    if (i < 0 || i >= TRACKS.length) return;
+    if (idx >= 0) $('tr-' + idx).classList.remove('now');
+    A[2].pause(); A[3].pause();
+    idx = i; var t = TRACKS[i]; $('tr-' + i).classList.add('now'); $('tr-' + i).classList.remove('bad'); $('err-' + i).textContent = ''; clearError();
+    $('nowTitle').textContent = t.n + '. ' + t.title; $('dur').textContent = fmt(t.dur); $('cur').textContent = '0:00'; $('seek').value = 0; $('seek').disabled = false;
+    status('読み込み中…');
+    [2, 3].forEach(function (v) { A[v].loop = mode === 'loop'; if (v !== ver) { A[v].removeAttribute('src'); A[v].load(); } });
+    var a = cur(); a.src = BASE[ver] + t.id + '.m4a'; start(a, i, ver);
+    if ('mediaSession' in navigator && window.MediaMetadata) { try { navigator.mediaSession.metadata = new MediaMetadata({ title: t.title, artist: 'なおとっち BGM V' + ver }); } catch (e) {} }
+    $('tr-' + i).scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+  $('list').addEventListener('click', function (e) {
+    var b = e.target.closest('button.row'); if (!b) return; var i = +b.dataset.i, a = cur();
+    if (i === idx && !a.paused) { a.pause(); return; }
+    if (i === idx && a.getAttribute('src') && !a.error) { start(a, i, ver); return; }
+    playIndex(i);
+  });
+  document.querySelectorAll('.modes button').forEach(function (b) { b.addEventListener('click', function () {
+    mode = b.dataset.mode; A[2].loop = A[3].loop = mode === 'loop';
+    document.querySelectorAll('.modes button').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+  }); });
+  document.querySelectorAll('.ab button').forEach(function (b) { b.addEventListener('click', function () { setVer(+b.dataset.v); }); });
+  $('play').addEventListener('click', function () { var a = cur(); if (idx < 0) { playIndex(0); return; } if (a.error || !a.getAttribute('src')) { playIndex(idx); return; } if (a.paused) start(a, idx, ver); else a.pause(); });
+  $('prev').addEventListener('click', function () { playIndex(Math.max(0, idx - 1)); });
+  $('next').addEventListener('click', function () { playIndex(idx < 0 ? 0 : Math.min(TRACKS.length - 1, idx + 1)); });
+  [2, 3].forEach(function (v) {
+    var a = A[v];
+    a.addEventListener('playing', function () { if (A[ver] !== a) return; status('V' + v + (mode === 'loop' ? ' ループ再生中' : mode === 'continuous' ? ' 連続再生中' : ' 再生中')); $('play').textContent = '❚❚'; });
+    a.addEventListener('pause', function () { if (A[ver] !== a) return; if (!a.error && !a.ended) status('一時停止'); $('play').textContent = '▶'; });
+    a.addEventListener('waiting', function () { if (A[ver] === a) status('読み込み中…'); });
+    a.addEventListener('error', function () { if (A[ver] !== a || idx < 0 || !a.getAttribute('src')) return; showError(idx, v, a.error ? a.error.code : 0); });
+    a.addEventListener('timeupdate', function () { if (A[ver] !== a) return; var d = a.duration && isFinite(a.duration) ? a.duration : TRACKS[idx].dur; $('cur').textContent = fmt(a.currentTime); if (!seeking && d) $('seek').value = Math.round(a.currentTime / d * 1000); });
+    a.addEventListener('ended', function () { if (A[ver] !== a) return; if (mode === 'continuous' && idx < TRACKS.length - 1) { playIndex(idx + 1); return; } status('再生おわり'); $('play').textContent = '▶'; });
+  });
+  var seek = $('seek');
+  seek.addEventListener('input', function () { seeking = true; var a = cur(), d = a.duration || TRACKS[idx].dur; $('cur').textContent = fmt(seek.value / 1000 * d); });
+  seek.addEventListener('change', function () { var a = cur(), d = a.duration || TRACKS[idx].dur; try { a.currentTime = seek.value / 1000 * d; } catch (e) {} seeking = false; });
+  window.NAOTOCCHI_BGM_CMP = { tracks: TRACKS, audio: A, state: function () { return { idx: idx, ver: ver, mode: mode }; } };
+})();
+</script>
+</body>
+</html>
