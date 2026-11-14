@@ -6,7 +6,8 @@
   'use strict';
   const me = root.document.currentScript; const app = me && me.dataset.app;
   const B = root.NAOTOCCHI_BGM2; if (!B || !app) return;
-  const bgm = B.forPage({ base: new URL('assets/bgm/catalog.js', me.src).href.replace(/catalog\.js$/, '') });
+  // 本体のBGM出力: master 0.9 × FILE_LEVEL 0.4 = 0.36。効果音には適用しない。
+  const bgm = B.forPage({ level: 0.36, base: new URL('assets/bgm/catalog.js', me.src).href.replace(/catalog\.js$/, '') });
   root.NAOTOCCHI_SUBAPP_BGM = bgm;
   const $ = (s) => root.document.querySelector(s);
   let last = '';
