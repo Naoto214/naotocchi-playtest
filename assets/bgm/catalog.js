@@ -1,228 +1,228 @@
-// なおとっち BGM VERSION 2 の 曲目（自動生成: PR #539 の catalog-v2.json から。試遊版では 音源を VERSION 6 に 差し替え）。
+// なおとっち BGM VERSION 2 の 曲目（自動生成: PR #539 の catalog-v2.json から。試遊版では 音源を VERSION 7 に 差し替え）。
 // duration は 原盤の 正確な 長さ（秒）。AAC の 末尾の 詰め物は この 長さで 切って ループする。
 (function (root) { root.NAOTOCCHI_BGM_CATALOG = {
  "home-morning": {
   "title": "そよかぜの まど",
   "loop": true,
   "duration": 83.478254,
-  "file": "home-morning.m4a?v=22830bed238b",
-  "sha256": "22830bed238b556029f520adf6ac168e4af0b1967d51aaf01b4cd417cc167a05"
+  "file": "home-morning.m4a?v=a3c94016ab15",
+  "sha256": "a3c94016ab15fe8020536f00808539f2943a8c1d51b5bb06afe21de7724411ba"
  },
  "home-day": {
   "title": "いつもの にわ",
   "loop": true,
   "duration": 60.0,
-  "file": "home-day.m4a?v=b071685c4abd",
-  "sha256": "b071685c4abd272924b5bd0046d497e7fdad9c9afd2d70de4deda8a38674419f"
+  "file": "home-day.m4a?v=6535b366a0d7",
+  "sha256": "6535b366a0d766ffd6cb8439446a41b4f65137ea4f91ed8cd78efea9115a6cfa"
  },
  "home-evening": {
   "title": "ほしふる みずうみ",
   "loop": true,
   "duration": 65.454535,
-  "file": "home-evening.m4a?v=99a8b22167a4",
-  "sha256": "99a8b22167a4431bc1f959c7851b097c8199074f6b6758814ef47256d18e1aef"
+  "file": "home-evening.m4a?v=b3b1a668f16e",
+  "sha256": "b3b1a668f16e15ef83f7152d8ab29abdf598cd8c93d217cb1d7e3fa604d82e3b"
  },
  "home-night": {
   "title": "ほしぞらの やくそく",
   "loop": true,
   "duration": 50.526327,
-  "file": "home-night.m4a?v=dad57b4946fb",
-  "sha256": "dad57b4946fbfb8f4c11557ffbb092771efb7605363a3811113fba9a41806f35"
+  "file": "home-night.m4a?v=e2c494316c04",
+  "sha256": "e2c494316c04e22fc449c2c3866aca36658fa34dd9d57d4e943caa94d84b7e5a"
  },
  "poyo-1": {
   "title": "ぽよぽよ こもれび",
   "loop": true,
   "duration": 76.8,
-  "file": "poyo-1.m4a?v=029d4220860a",
-  "sha256": "029d4220860ae1e4420b4ac7b3eec1f822beafc8a60e808f67b33181e56a4aa5"
+  "file": "poyo-1.m4a?v=8d091d62399c",
+  "sha256": "8d091d62399c72bd5cb0766e5bb572e5267d1380f3e3200ee31d6f8743235a22"
  },
  "koro-1": {
   "title": "ころころ じんせい",
   "loop": true,
   "duration": 68.571429,
-  "file": "koro-1.m4a?v=709a55599c4a",
-  "sha256": "709a55599c4a4137a99ed4485ba0d4311c68c4cf265ff12a5f490f62d99f4aa5"
+  "file": "koro-1.m4a?v=20451449c876",
+  "sha256": "20451449c8762749e7b7d39f19223f83a135605b824ef34354b54eae4632d7d0"
  },
  "card-2": {
   "title": "デュエル・スタート",
   "loop": true,
   "duration": 83.478254,
-  "file": "card-2.m4a?v=7d141bcf8fcf",
-  "sha256": "7d141bcf8fcf271057e58cdb53c3c7efd9a7fadc86d0f68e543431158273fa3b"
+  "file": "card-2.m4a?v=ce0c0716221e",
+  "sha256": "ce0c0716221e8e10616647b58a446a1185869f50e23eef5c347226d4042ade6c"
  },
  "game-1": {
   "title": "あそびの はじまり",
   "loop": true,
   "duration": 53.333333,
-  "file": "game-1.m4a?v=52d88c37c64e",
-  "sha256": "52d88c37c64ec2c5e1ed8c78199394abdf2e40f64bee7efeb2f14b414d52c337"
+  "file": "game-1.m4a?v=915880056e90",
+  "sha256": "915880056e9044f65750b3bb925ba9f6bd6acda5e72f46a3659a94a3cd509ea6"
  },
  "explore-1": {
   "title": "ふしぎの ちか",
   "loop": true,
   "duration": 80.0,
-  "file": "explore-1.m4a?v=3821c0e91fa8",
-  "sha256": "3821c0e91fa8b8bec1f1fdb8e166f44dfa6f4e5ed1abe28d97c50393a3b8a5f5"
+  "file": "explore-1.m4a?v=cd2ba12bfd53",
+  "sha256": "cd2ba12bfd539d1486aa4744f2cf956b360a49219f2097af4f510d31598fd101"
  },
  "event-2": {
   "title": "ふたりの きねんび",
   "loop": true,
   "duration": 62.608685,
-  "file": "event-2.m4a?v=ae6a69be277f",
-  "sha256": "ae6a69be277fdc693beb60992a37c738abfb4c4e5cddccb7054c12d448d71980"
+  "file": "event-2.m4a?v=e1147aeb4d1c",
+  "sha256": "e1147aeb4d1cf707277059cd2e39faee11f7bf44f88b1efb5e4a89be22ab3598"
  },
  "event-1": {
   "title": "おめでとうの ひ",
   "loop": true,
   "duration": 66.206893,
-  "file": "event-1.m4a?v=992160acbc5d",
-  "sha256": "992160acbc5d6e4f65e47083e56394abc1830d1e4d4ab85215f31d71af61e941"
+  "file": "event-1.m4a?v=2360ab9acea6",
+  "sha256": "2360ab9acea6948693f2575b3f8aae7c91ab295d426690c47fadd98d70025cf3"
  },
  "kisetsu": {
   "title": "きせつの きおく",
   "loop": true,
   "duration": 89.302336,
-  "file": "kisetsu.m4a?v=40c9cf05a040",
-  "sha256": "40c9cf05a04023ee13c1fd563fe44ffb89c3acfbb951283a06ec656c76b67b8f"
+  "file": "kisetsu.m4a?v=f4158db2ed8a",
+  "sha256": "f4158db2ed8ae1a0eeb069dce113c64186031d387df2dcb3d2f777976258a825"
  },
  "ohayo": {
   "title": "おはようの ひかり",
   "loop": true,
   "duration": 48.0,
-  "file": "ohayo.m4a?v=1dcb99fd796c",
-  "sha256": "1dcb99fd796c9093324f778b7eebd22afcfd750a4e3c5c18e2099de88203e383"
+  "file": "ohayo.m4a?v=55f3725cc2fa",
+  "sha256": "55f3725cc2fae86655556bf910261f29a2facb87e153ae495c43ebb08a6fc9e3"
  },
  "bgm-game": {
   "title": "game（ミニゲーム・汎用）",
   "loop": true,
   "duration": 55.652177,
-  "file": "bgm-game.m4a?v=ee9b8ab99f2c",
-  "sha256": "ee9b8ab99f2cfba4d382a25693abb90f9d7cf0f4843870749f6719046e0ad02f"
+  "file": "bgm-game.m4a?v=c7b8f2c6682c",
+  "sha256": "c7b8f2c6682c0f61c5515b30466362730d82673de00d2eba8fb27063d032a67d"
  },
  "bgm-race": {
   "title": "race（3D・のりもの）",
   "loop": true,
   "duration": 50.526327,
-  "file": "bgm-race.m4a?v=7feaffd48d8a",
-  "sha256": "7feaffd48d8a87bf774431995cd605bd83db2a635858e1e9f4a9c8786afcf1e2"
+  "file": "bgm-race.m4a?v=81000f11daa3",
+  "sha256": "81000f11daa3f31be0e48b8247235b66790f26e757abb7979e547907a4c96f6e"
  },
  "bgm-farewell": {
   "title": "farewell（おわかれ）",
   "loop": true,
   "duration": 64.0,
-  "file": "bgm-farewell.m4a?v=f1b272894d4d",
-  "sha256": "f1b272894d4dfd2c6a6e006b7511d48a8080eac8e3739ccb9916bd5597da21e1"
+  "file": "bgm-farewell.m4a?v=c35d64ca46b7",
+  "sha256": "c35d64ca46b7e7027f0a157fd44cb197f2417c7dfd14eb27bb4d027e2f0faae8"
  },
  "poyo-2": {
   "title": "みんなで かえろう",
   "loop": true,
   "duration": 83.076916,
-  "file": "poyo-2.m4a?v=b2815f11feea",
-  "sha256": "b2815f11feeabed890c065a42786cfc32c67767c784a71f9300df199a6220ddc"
+  "file": "poyo-2.m4a?v=fa15803575d6",
+  "sha256": "fa15803575d6aeca816ecd4268ff15ff7ec1c4bce4c164d1b51a7a5ee970b724"
  },
  "game-2": {
   "title": "ぴょこぴょこ ステップ",
   "loop": true,
   "duration": 60.0,
-  "file": "game-2.m4a?v=58ded98432f5",
-  "sha256": "58ded98432f5f268061951ba36eed3c3218ab59c139a1a27100f216735b4a43e"
+  "file": "game-2.m4a?v=3804a95cf53a",
+  "sha256": "3804a95cf53abff9fddf8b184927af9232c5be1662e728b5b26a69a580c489be"
  },
  "explore-2": {
   "title": "そらと うみの さんぽ",
   "loop": true,
   "duration": 71.111111,
-  "file": "explore-2.m4a?v=d11d2b9cc4ec",
-  "sha256": "d11d2b9cc4ec9317ed52f7791789fc379bc05cd83c70b66b487ad71e2a1eef26"
+  "file": "explore-2.m4a?v=68fbba6f6219",
+  "sha256": "68fbba6f6219501d40636619b463f74a310d4e132525aa00ca6ab2f3ed5c5c8e"
  },
  "board-b": {
   "title": "きしと おしろ",
   "loop": true,
   "duration": 80.0,
-  "file": "board-b.m4a?v=9c66c4300c9c",
-  "sha256": "9c66c4300c9cbb2660bc53c2f351f43b647deca2431cdd493f134416144be2b9"
+  "file": "board-b.m4a?v=cbc0d7655f96",
+  "sha256": "cbc0d7655f96a666495d0258fbc6f8491c937398220b0db3822de44385e04aa5"
  },
  "fishing-a": {
   "title": "みずべの うたたね",
   "loop": true,
   "duration": 45.714286,
-  "file": "fishing-a.m4a?v=ab22f1d3eb3c",
-  "sha256": "ab22f1d3eb3c5b863dc5a74c7c26e4e8c22545b3b6b20c251ac53b0ff7cdf330"
+  "file": "fishing-a.m4a?v=f44f755a7346",
+  "sha256": "f44f755a734607244f6ec6a23d5ac4c0cdcb6e08e2a478a0f6471bfc6d45ca80"
  },
  "lullaby-a": {
   "title": "ねむりの ほし",
   "loop": true,
   "duration": 45.714286,
-  "file": "lullaby-a.m4a?v=10d77014c9bd",
-  "sha256": "10d77014c9bdf48d274510f4d6c5eca735240e05eafe2b9ffa73b805ab400292"
+  "file": "lullaby-a.m4a?v=b2585f3df90e",
+  "sha256": "b2585f3df90e43530303089b33a3308f004152d7cdda13f44375bb8eccadc7bc"
  },
  "jingle-achieve": {
   "title": "やったね",
   "loop": false,
   "duration": 9.2,
-  "file": "jingle-achieve.m4a?v=9dd5e48da8af",
-  "sha256": "9dd5e48da8af31269af8fd341b1e34d55c6db84f3558ec2bb4ca6835406c2a9a"
+  "file": "jingle-achieve.m4a?v=e3919a741b1a",
+  "sha256": "e3919a741b1af2b2ca536a7a81dfe3c01939b1aed53f1f28da2f15a6fe7e8e41"
  },
  "jingle-card-lose": {
   "title": "つぎは かつぞ",
   "loop": false,
   "duration": 6.2,
-  "file": "jingle-card-lose.m4a?v=ae85bec54421",
-  "sha256": "ae85bec5442170dabf3e13589ffc1dba2b0453a8edca489ec3739a44b3dd06da"
+  "file": "jingle-card-lose.m4a?v=7047f7d1b8d4",
+  "sha256": "7047f7d1b8d4b13b4567003deef2ad9710eceac125eb568629f1bc23cdea0665"
  },
  "var-poyo-clear": {
   "title": "ぽよぽよこもれび（ステージクリア）",
   "loop": false,
   "duration": 10.8,
-  "file": "var-poyo-clear.m4a?v=ad476df98307",
-  "sha256": "ad476df983078a99401f2064269a917a0f6ea7f38b566bf8c31528df79d19700"
+  "file": "var-poyo-clear.m4a?v=29663aed80bf",
+  "sha256": "29663aed80bf78fec5590f03e13e8b7af9f16bfea31590cb722c25dbba4ffae9"
  },
  "var-poyo-chapter": {
   "title": "ぽよぽよこもれび（章の おわり）",
   "loop": true,
   "duration": 48.0,
-  "file": "var-poyo-chapter.m4a?v=c96aefd84e6b",
-  "sha256": "c96aefd84e6b2fab594d0810733d054a4d3f695e0b101659b2002ca25071d858"
+  "file": "var-poyo-chapter.m4a?v=e0101ea87248",
+  "sha256": "e0101ea87248920b33c60bcf00a7425db5d7ca9d54198cdebed9fd678b90dddc"
  },
  "var-koro-goal": {
   "title": "ころころじんせい（ゴール）",
   "loop": false,
   "duration": 9.771429,
-  "file": "var-koro-goal.m4a?v=804b9f46bd39",
-  "sha256": "804b9f46bd3999d67f9d2e495a8e401920038f548c79e4e18c2c0bc4ecaaa32b"
+  "file": "var-koro-goal.m4a?v=f85bcb3f6167",
+  "sha256": "f85bcb3f61674e244a4bef7c6f054d4815d4d6f41de33ed43bf071ae83c9eb79"
  },
  "var-koro-album": {
   "title": "ころころじんせい（人生アルバム）",
   "loop": true,
   "duration": 45.714286,
-  "file": "var-koro-album.m4a?v=e756619d0f8d",
-  "sha256": "e756619d0f8d6c6c8aa3c4a5a17bf231eff365525fae8bd16280fccf6a726f57"
+  "file": "var-koro-album.m4a?v=01b1bc329e68",
+  "sha256": "01b1bc329e68d8a564ee9fcf7dd92b8efe6f7372209fde82c8acc417fdde25c7"
  },
  "var-card-late": {
   "title": "デュエル・スタート（終盤）",
   "loop": true,
   "duration": 73.846145,
-  "file": "var-card-late.m4a?v=3914f6919867",
-  "sha256": "3914f69198672d7e7a942f221703a681ce3adcf14f010eabcced7220441b010f"
+  "file": "var-card-late.m4a?v=17bddddc5814",
+  "sha256": "17bddddc581488ca3bd7d533acff5ef9dceb3d7f7b5b8c7319843904c700a23d"
  },
  "var-card-win": {
   "title": "デュエル・スタート（勝利）",
   "loop": false,
   "duration": 8.156531,
-  "file": "var-card-win.m4a?v=b26cd307e9e7",
-  "sha256": "b26cd307e9e74685bf730c97a2f25e2143d364edb361848ab1cdcb38cd76bf53"
+  "file": "var-card-win.m4a?v=c15031fe1eac",
+  "sha256": "c15031fe1eac17707546d0ec191b725cbde5cb52f24478e6209219906285c51f"
  },
  "var-flight": {
   "title": "そらとうみのさんぽ（きらめき・はやめ）",
   "loop": true,
   "duration": 64.0,
-  "file": "var-flight.m4a?v=16f4ac6a7d5b",
-  "sha256": "16f4ac6a7d5bc86d24795bed01e85164b5f97798f960325cece8b7c6dade6684"
+  "file": "var-flight.m4a?v=8cd4d8f1c62e",
+  "sha256": "8cd4d8f1c62e4a68bdee8c25bd55a68d685e4d2c43ea8eee57d376833ce34eda"
  },
  "var-ohayo-hatch2": {
   "title": "おはようのひかり（たまごが かえる・ファンファーレ 2小節）",
   "loop": false,
   "duration": 6.75,
-  "file": "var-ohayo-hatch2.m4a?v=e51cf1a27df6",
-  "sha256": "e51cf1a27df601746f7d34d79953e263bf7b421d37269dfd2a73cca8d236845b"
+  "file": "var-ohayo-hatch2.m4a?v=1d95d59a0a23",
+  "sha256": "1d95d59a0a235be39ab12386f7cb3e5ac5fb2722f317f5810903d68d711586be"
  }
 }; })(typeof globalThis !== 'undefined' ? globalThis : this);
